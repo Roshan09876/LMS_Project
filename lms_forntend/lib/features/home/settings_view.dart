@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_management_system/config/common/app_color.dart';
 import 'package:learn_management_system/config/common/reusable_text.dart';
+import 'package:learn_management_system/features/profile/presentation/view_model/profile_view_model.dart';
 
 class SettingsView extends ConsumerStatefulWidget {
   const SettingsView({super.key});
@@ -13,8 +14,18 @@ class SettingsView extends ConsumerStatefulWidget {
 }
 
 class _SettingsViewState extends ConsumerState<SettingsView> {
+  //  @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((_) async {
+  //     await ref.read(profileViewModelProvider.notifier).getProfile();
+  //   });
+  // }
   @override
   Widget build(BuildContext context) {
+    final profileState = ref.watch(profileViewModelProvider);
+    final profile = profileState.users!.first;
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: kButton,
@@ -39,17 +50,20 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                         padding: const EdgeInsets.only(left: 20),
                         child: CircleAvatar(
                           backgroundColor: Colors.transparent,
-                          radius: 60,
-                          child: Image.asset('assets/images/login_icon.png'),
+                          radius: 50,
+                          backgroundImage:
+                              profile.image != null && profile.image!.isNotEmpty
+                                  ? NetworkImage(profile.image!)
+                                  : AssetImage('assets/images/login_icon.png'),
                         ),
                       ),
                       SizedBox(
                         width: 40,
                       ),
                       ReusableText(
-                          text: 'UserName',
+                          text: '${profile.userName}'.toUpperCase(),
                           fontSize: 19,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.bold,
                           color: Color(kLight.value))
                     ],
                   ),
