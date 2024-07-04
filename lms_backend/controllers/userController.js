@@ -2,6 +2,8 @@ const User = require("../models/userModel");
 const cloudinary = require("cloudinary");
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const Book = require("../models/bookModel")
+const Course = require("../models/courseModel")
 // const validate = require("deep-email-validator")
 
 
@@ -113,12 +115,24 @@ const signin = async (req, res) => {
             image: userData.image
         };
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "6hr" })
+          // Check if user has selected a course
+          if (!userData.selectedCourse || userData.selectedCourse.length === 0) {
+            return res.status(200).json({
+                success: true,
+                token: token,
+                userData,
+                message: "Please select a course"
+            });
+        }
+        const books = await getBooksByCourse(userData.selectedCourse);
         res.status(201).json({
             success: true,
             token: token,
             userData,
+            books,
             message: "Login Successfully"
         })
+
     } catch (error) {
         console.log(error)
         return res.status(400).json({
@@ -128,6 +142,16 @@ const signin = async (req, res) => {
     }
 
 }
+
+const getBooksByCourse = async (selectedCourseIds) => {
+    try {
+        const books = await Book.find({ course: { $in: selectedCourseIds } });
+        return books;
+    } catch (error) {
+        console.error(`Error fetching books: ${error}`);
+        return [];
+    }
+};
 
 //User Profile 
 const userProfile = async (req, res) => {
@@ -196,6 +220,28 @@ const updateProfile = async (req, res) => {
     }
 };
 
+const selectCourse = async (req, res) => {
+
+    try {
+        const { userId, courseId } = req.body;
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { $set: { selectedCourse: courseId } },
+            { new: true }
+        )
+        const books = await getBooksByCourse(user.selectedCourse);
+        res.status(201).json({
+            success: true,
+            user,
+            books,
+            message: "Course Selected"
+        })
+
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+}
+
 module.exports = {
-    signUp, signin, userProfile, updateProfile
+    signUp, signin, userProfile, updateProfile, selectCourse
 };

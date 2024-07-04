@@ -6,5 +6,6 @@ router.post('/signup', userController.signUp)
 router.post('/signin',   userController.signin)
 router.get('/profile/:id', userController.userProfile)
 router.put('/update/:id', userController.updateProfile)
+router.put('/selectcourse', userController.selectCourse)
 
 module.exports = router
