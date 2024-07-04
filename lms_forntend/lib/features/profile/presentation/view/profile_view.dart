@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_management_system/config/common/app_color.dart';
 import 'package:learn_management_system/config/common/reusable_text.dart';
+import 'package:learn_management_system/core/app_routes.dart';
 import 'package:learn_management_system/features/profile/presentation/view_model/profile_view_model.dart';
 
 class ProfileView extends ConsumerStatefulWidget {
@@ -60,15 +61,18 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                     CircleAvatar(
                                       backgroundColor: Colors.transparent,
                                       radius: 50,
-                                      backgroundImage: profile.image != null && profile.image!.isNotEmpty
+                                      backgroundImage: profile.image != null &&
+                                              profile.image!.isNotEmpty
                                           ? NetworkImage(profile.image!)
-                                          : AssetImage('assets/images/login_icon.png'),
+                                          : AssetImage(
+                                              'assets/images/login_icon.png'),
                                     ),
                                     SizedBox(
                                       width: 40,
                                     ),
                                     ReusableText(
-                                        text: '${profile.userName}'.toUpperCase(),
+                                        text:
+                                            '${profile.userName}'.toUpperCase(),
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                         color: Color(kButton.value)),
@@ -78,10 +82,12 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                               _gap,
                               _gap,
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       ReusableText(
                                           text: 'FullName',
@@ -109,7 +115,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                     ],
                                   ),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       ReusableText(
                                           text: '${profile.fullName}',
@@ -140,7 +147,10 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                               ),
                               _gap,
                               SettingsItem(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, AppRoute.editprofileViewRoute);
+                                },
                                 icons: Icons.edit,
                                 iconStyle: IconStyle(
                                   iconsColor: Colors.white,
@@ -153,7 +163,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                               _gap,
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
-                                child: Image.asset('assets/images/for_profile.png'),
+                                child: Image.asset(
+                                    'assets/images/for_profile.png'),
                               )
                             ],
                           ),

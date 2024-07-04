@@ -31,9 +31,7 @@ class AuthRemoteDatasource {
             statusCode: response.statusCode.toString()));
       }
     } on DioException catch (e) {
-      return Left(Failure(
-        error: e.error.toString(),
-      ));
+      return Left(Failure(error: e.response!.data['message']));
     }
   }
 
@@ -58,12 +56,7 @@ class AuthRemoteDatasource {
             statusCode: response.statusCode.toString()));
       }
     } on DioException catch (e) {
-      return Left(
-        Failure(
-          error: e.error.toString(),
-          statusCode: e.response?.statusCode.toString() ?? '0',
-        ),
-      );
+      return Left(Failure(error: e.response!.data['message']));
     }
   }
 }

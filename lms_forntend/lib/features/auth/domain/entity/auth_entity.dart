@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 class AuthEntity extends Equatable {
@@ -36,4 +37,24 @@ class AuthEntity extends Equatable {
         fullName, email, userName, phoneNumber, password, selectedCourse, image
       ];
 
+
+  AuthEntity copyWith({
+    String? fullName,
+    String? email,
+    String? userName,
+    String? phoneNumber,
+    String? password,
+    List<dynamic>? selectedCourse,
+    String? image,
+  }) {
+    return AuthEntity(
+      fullName: fullName ?? this.fullName,
+      email: email ?? this.email,
+      userName: userName ?? this.userName,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      password: password ?? this.password,
+      selectedCourse: selectedCourse ?? this.selectedCourse,
+      image: image ?? this.image,
+    );
+  }
 }

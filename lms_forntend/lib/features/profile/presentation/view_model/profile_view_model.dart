@@ -1,4 +1,10 @@
+import 'dart:async';
+
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:learn_management_system/config/common/show_snack_bar.dart';
+import 'package:learn_management_system/features/auth/domain/entity/auth_entity.dart';
 import 'package:learn_management_system/features/profile/data/profile_remote_datasource.dart';
 
 import '../state/profile_state.dart';
@@ -35,6 +41,18 @@ class ProfileViewModel extends StateNotifier<ProfileState> {
           isLoading: false, error: 'An unexpected error occurred');
     }
   }
+
+  Future<void> updateProfile(AuthEntity authEntity, BuildContext context)async {
+    state = state.copyWith(isLoading: true);
+    final result = await _profileRemoteDatasource.updateProfile(authEntity);
+    result.fold((failure) {
+      state = state.copyWith(isLoading: false, error: failure.error);
+    }, (success) {
+      state = state.copyWith(isLoading: false, showMessage: null);
+      showSnackBar(message: 'Updated Successfuly', context: context);
+    });
+  }
+
   Future resetState() async{
     state = ProfileState.initial();
     getProfile();

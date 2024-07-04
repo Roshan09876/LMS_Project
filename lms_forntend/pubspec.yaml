@@ -47,6 +47,7 @@ dependencies:
   dartz: ^0.10.1
   babstrap_settings_screen: ^0.1.6
   jwt_decoder: ^2.0.1
+  awesome_dialog: ^3.2.1
 
 dev_dependencies:
   flutter_test:

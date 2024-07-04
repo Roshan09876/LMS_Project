@@ -1,26 +1,30 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:learn_management_system/config/common/app_color.dart';
 import 'package:learn_management_system/config/common/reusable_text.dart';
+import 'package:learn_management_system/core/app_routes.dart';
 import 'package:learn_management_system/features/profile/presentation/view_model/profile_view_model.dart';
 
 class SettingsView extends ConsumerStatefulWidget {
-  const SettingsView({super.key});
+  const SettingsView({
+    super.key,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SettingsViewState();
 }
 
+final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+Future<void> logout(BuildContext context) async {
+  await secureStorage.delete(key: "token");
+  Navigator.pushReplacementNamed(context, AppRoute.loginViewRoute);
+}
+
 class _SettingsViewState extends ConsumerState<SettingsView> {
-  //  @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback((_) async {
-  //     await ref.read(profileViewModelProvider.notifier).getProfile();
-  //   });
-  // }
   @override
   Widget build(BuildContext context) {
     final profileState = ref.watch(profileViewModelProvider);
@@ -74,7 +78,9 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
               ),
               SettingsGroup(items: [
                 SettingsItem(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoute.editprofileViewRoute);
+                  },
                   icons: Icons.edit,
                   iconStyle: IconStyle(
                     iconsColor: Colors.white,
@@ -118,7 +124,9 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                 settingsGroupTitle: 'Account',
                 items: [
                   SettingsItem(
-                    onTap: () {},
+                    onTap: () {
+                      showLogout(context);
+                    },
                     icons: Icons.exit_to_app_rounded,
                     title: "Sign Out",
                   ),
@@ -128,4 +136,21 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
           ),
         ));
   }
+}
+
+void showLogout(BuildContext context) {
+  AwesomeDialog(
+    context: context,
+    dialogType: DialogType.warning,
+    animType: AnimType.bottomSlide,
+    title: "Logout",
+    //  titleTextStyle: G.montserrat(
+    //   color: AppColors.primaryColor,
+    //   fontSize: 15,
+    //   fontWeight: FontWeight.w600,
+    // ),
+    desc: "Are you sure you want to logout?",
+    btnCancelOnPress: () {},
+    btnOkOnPress: () => logout(context),
+  ).show();
 }
