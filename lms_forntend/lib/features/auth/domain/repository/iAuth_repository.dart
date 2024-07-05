@@ -9,5 +9,5 @@ final iauthRepositoryProvider =
 
 abstract class IauthRepository {
   Future<Either<Failure, bool>> register(AuthEntity authEntity);
-  Future<Either<Failure, bool>> login(String userName, String password);
+  Future<Either<Failure, AuthEntity>> login(String userName, String password);
 }

@@ -35,7 +35,7 @@ class AuthRemoteDatasource {
     }
   }
 
-  Future<Either<Failure, bool>> login(String userName, String password) async {
+  Future<Either<Failure, AuthEntity>> login(String userName, String password) async {
     try {
       final url = ApiEndpoints.login;
       Response response = await dio.post(url, data: {
@@ -44,12 +44,22 @@ class AuthRemoteDatasource {
       });
       if (response.statusCode == 200 || response.statusCode == 201) {
         final token = response.data['token'];
+        final userData = response.data['userData'];
        final userName = response.data['userData']['userName'];
         final password = response.data['userData']['password'];
+        final authEntity = AuthEntity.fromJson({
+          'fullName': userData['fullName'],
+          'email': userData['email'],
+          'userName': userData['userName'],
+          'phoneNumber': userData['phoneNumber'],
+          'password': userData['password'],
+          'selectedCourse': userData['selectedCourse'],
+          'image': userData['image'],
+        });
         await flutterSecureStorage.write(key: "token", value: token);
         await flutterSecureStorage.write(key: 'userName', value: userName);
         await flutterSecureStorage.write(key: 'password', value: password);
-        return Right(true);
+        return Right(authEntity);
       } else {
         return Left(Failure(
             error: response.data['message'],

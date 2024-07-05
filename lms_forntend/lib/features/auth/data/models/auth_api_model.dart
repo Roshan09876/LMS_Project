@@ -24,27 +24,28 @@ class AuthApiModel {
     this.image,
   });
 
-  //FROM ENTITY
+  // Convert from AuthEntity to AuthApiModel
   factory AuthApiModel.fromEntity(AuthEntity authEntity) {
     return AuthApiModel(
-        fullName: authEntity.fullName,
-        email: authEntity.email,
-        userName: authEntity.userName,
-        phoneNumber: authEntity.phoneNumber,
-        password: authEntity.password,
-        selectedCourse: authEntity.selectedCourse,
-        image: authEntity.image,);
+      fullName: authEntity.fullName,
+      email: authEntity.email,
+      userName: authEntity.userName,
+      phoneNumber: authEntity.phoneNumber,
+      password: authEntity.password,
+      selectedCourse: authEntity.selectedCourse,
+      image: authEntity.image,
+    );
   }
 
-  //From JSON
+  // JSON serialization
   factory AuthApiModel.fromJson(Map<String, dynamic> json) =>
       _$AuthApiModelFromJson(json);
 
-  //To JSON
+  // JSON serialization
   Map<String, dynamic> toJson() => _$AuthApiModelToJson(this);
 
-    //To Entity
-   AuthEntity toEntity() {
+  // Convert to AuthEntity
+  AuthEntity toEntity() {
     return AuthEntity(
       fullName: fullName,
       email: email,
@@ -52,7 +53,7 @@ class AuthApiModel {
       phoneNumber: phoneNumber,
       password: password,
       selectedCourse: selectedCourse,
-      image: image,// Assign the id field
+      image: image,
     );
   }
 }

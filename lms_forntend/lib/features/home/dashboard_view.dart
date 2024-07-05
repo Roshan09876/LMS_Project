@@ -1,110 +1,129 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_management_system/config/common/app_color.dart';
 import 'package:learn_management_system/config/common/reusable_text.dart';
+import 'package:learn_management_system/features/auth/presentation/view_model/auth_view_model.dart';
+import 'package:learn_management_system/features/course/presentation/view/select_course.dart';
 
-class DashboardView extends StatefulWidget {
-  const DashboardView({super.key});
+class DashboardView extends ConsumerStatefulWidget {
+  const DashboardView({Key? key}) : super(key: key);
 
   @override
-  State<DashboardView> createState() => _DashboardViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _DashboardViewState();
 }
 
-class _DashboardViewState extends State<DashboardView> {
+class _DashboardViewState extends ConsumerState<DashboardView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            color: kMilkLight,
-          ),
-          Container(
-            height: 250,
-            width: double.infinity,
-            decoration: const BoxDecoration(
-                color: kButton,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(40),
-                    bottomRight: Radius.circular(40))),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+    return Consumer(
+      builder: (context, watch, child) {
+        final authState = ref.watch(authViewModelProvider);
+
+        // Check if selectedCourse is empty or null
+        if (authState.currentUser.selectedCourse == null ||
+            authState.currentUser.selectedCourse!.isEmpty) {
+          return SelectCourseView(); // Show SelectCourseView if no course selected
+        } else {
+          return Scaffold(
+            body: Stack(
+              children: [
+                Container(
+                  color: kMilkLight,
+                ),
+                Container(
+                  height: 250,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: kButton,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(40),
+                      bottomRight: Radius.circular(40),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ReusableText(
-                            text: 'LearnEase',
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
-                            color: kLight),
-                        ReusableText(
-                            text: 'Welcome User',
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: kLight),
+                        Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ReusableText(
+                                text: 'LearnEase',
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                                color: kLight,
+                              ),
+                              ReusableText(
+                                text:
+                                    'Welcome ${authState.currentUser.fullName}',
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: kLight,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: 130.0,
+                          height: 130.0,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/logo.png'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
-                  Container(
-                    width: 130.0,
-                    height: 130.0,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/logo.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            left: 5,
-            right: 0,
-            top: 220,
-            // bottom: -25,  // Adjust this value to control the overlap amount
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Container(
-                height: 60,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(50.0),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black26,
-                      // blurRadius: 4.0,
-                      // offset: Offset(0, 2),
-                    ),
-                  ],
                 ),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.remove,
-                        color: kDark,
+                Positioned(
+                  left: 5,
+                  right: 0,
+                  top: 220,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                    child: Container(
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(50.0),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                          ),
+                        ],
                       ),
-                    ),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide(color: kLight),
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.search),
+                          suffixIcon: IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.remove,
+                              color: kDark,
+                            ),
+                          ),
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide(color: kLight),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50.0)),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ),
-        ],
-      ),
+          );
+        }
+      },
     );
   }
 }

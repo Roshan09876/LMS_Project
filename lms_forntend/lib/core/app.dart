@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: AppRoute.registerViewRoute,
+      initialRoute: AppRoute.loginViewRoute,
       routes: AppRoute.getApplicationRoute(),
       theme:
           ThemeData(fontFamily: 'Poppins', scaffoldBackgroundColor: kMilkLight),

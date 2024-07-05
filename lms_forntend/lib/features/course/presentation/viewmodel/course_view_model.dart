@@ -21,4 +21,15 @@ class CourseViewModel extends StateNotifier<CourseState> {
       state = state.copyWith(isLoading: false, courses: success, error: null);
     });
   }
+
+  Future<void> selectCourse(String courseId) async {
+    state = state.copyWith(isLoading: true);
+    final result = await courseRemoteDatasource.selectCourse(courseId);
+
+    result.fold((failure) {
+      state = state.copyWith(isLoading: false, error: failure.error);
+    }, (success) {
+      state = state.copyWith(isLoading: false);
+    });
+  }
 }

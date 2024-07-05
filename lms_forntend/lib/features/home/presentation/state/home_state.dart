@@ -13,7 +13,7 @@ class HomeState {
   factory HomeState.initial() {
     return HomeState(index: 0, lstWidget: [
       const DashboardView(),
-      const CourseView(),
+      // const CourseView(),
       const ProfileView(),
       SettingsView(),
     ]);

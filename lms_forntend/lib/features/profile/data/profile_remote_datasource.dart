@@ -64,7 +64,7 @@ Future<Either<Failure, List<AuthEntity>>> getProfile() async {
           userName: userJSON['userName'],
           phoneNumber: userJSON['phoneNumber'],
           password: userJSON['password'],
-          selectedCourse: selectedCourses,
+          selectedCourse: userJSON['selectedCourse'],
           image: userJSON['image'],
         );
         return Right([user]);

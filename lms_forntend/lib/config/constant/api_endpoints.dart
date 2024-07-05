@@ -18,4 +18,5 @@ class ApiEndpoints {
   static const String getProfile = "/profile";
   static const String updateProfile= "/update";
   static const String getAllCourse= "/getallcourse";
+  static const String selectCourse= "/selectcourse";
 }

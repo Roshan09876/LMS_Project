@@ -62,6 +62,7 @@ class AuthViewModel extends StateNotifier<AuthState> {
         isLoading: false,
         error: null,
         showMessage: true,
+        currentUser: success
       );
       showSnackBar(
           message: 'Login Successfully', context: context, color: Colors.green);

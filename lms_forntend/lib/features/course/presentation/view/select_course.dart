@@ -42,7 +42,7 @@ class _SelectCourseViewState extends ConsumerState<SelectCourseView> {
           fontWeight: FontWeight.w500,
           color: Colors.white,
         ),
-        backgroundColor: Color(kButton.value), 
+        backgroundColor: Color(kButton.value),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -50,10 +50,10 @@ class _SelectCourseViewState extends ConsumerState<SelectCourseView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ReusableText(
-              text: "Available Courses",
-              fontSize: 24,
+              text: "Please select course to Start your journey",
+              fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.blue,
+              color: Colors.red,
             ),
             SizedBox(height: 10),
             if (courseState.isLoading)
@@ -87,8 +87,19 @@ class _SelectCourseViewState extends ConsumerState<SelectCourseView> {
                         fontWeight: FontWeight.w800,
                         color: Color(kDark.value),
                       ),
-                      onTap: () {
-                        // Handle course selection
+                      onTap: () async {
+                        if (course.id != null) {
+                          await ref
+                              .read(courseViewModelProvider.notifier)
+                              .selectCourse(course.id!);
+                        } else {
+                          // Handle the case where course.id is null
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Course ID is null'),
+                            ),
+                          );
+                        }
                       },
                     );
                   },
