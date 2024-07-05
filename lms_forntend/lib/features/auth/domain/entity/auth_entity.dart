@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
+import 'package:learn_management_system/features/course/model/course_model.dart';
 
 class AuthEntity extends Equatable {
     final String? fullName;
@@ -7,7 +8,7 @@ class AuthEntity extends Equatable {
     final String? userName;
     final String? phoneNumber;
     final String? password;
-    final List<dynamic>? selectedCourse;
+    final List<CourseModel>? selectedCourse;
     final String? image;
 
     AuthEntity({
@@ -27,7 +28,7 @@ class AuthEntity extends Equatable {
       'userName': userName,
       'phoneNumber': phoneNumber,
       'password': password,
-      if (selectedCourse != null) 'selectedCourse': selectedCourse,
+      'selectedCourse': selectedCourse?.map((course) => course.toJson()).toList(),
     if (image != null) 'image': image,
     };
   }
@@ -38,13 +39,15 @@ class AuthEntity extends Equatable {
       ];
 
 
+
+
   AuthEntity copyWith({
     String? fullName,
     String? email,
     String? userName,
     String? phoneNumber,
     String? password,
-    List<dynamic>? selectedCourse,
+    List<CourseModel>? selectedCourse,
     String? image,
   }) {
     return AuthEntity(

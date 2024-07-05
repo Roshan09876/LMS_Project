@@ -50,9 +50,9 @@ const createCourse = async (req, res) => {
 
 const getAllCourse = async(req, res) => {
     try {
-        const allCourse = await Course.find().sort({ createdAt: -1})
+        const allCourse = await Course.find()
         return res.status(201).json({
-            success: false,
+            success: true,
             message: "All Course",
             allCourse
         }) 

@@ -1,3 +1,5 @@
+import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_management_system/core/app_routes.dart';
@@ -189,7 +191,22 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       ),
                     )
                   ],
-                )
+                ),
+                _gap,
+                _gap,
+                 SettingsItem(
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoute.selectcourseViewRoute);
+                  },
+                  icons: Icons.select_all,
+                  iconStyle: IconStyle(
+                    iconsColor: Colors.white,
+                    withBackground: true,
+                    backgroundColor: Color(kButton.value),
+                  ),
+                  title: 'Choose Course',
+                  subtitle: "Courses",
+                ),
               ],
             ),
           ),

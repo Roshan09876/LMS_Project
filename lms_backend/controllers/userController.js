@@ -117,8 +117,8 @@ const signin = async (req, res) => {
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "6hr" })
           // Check if user has selected a course
           if (!userData.selectedCourse || userData.selectedCourse.length === 0) {
-            return res.status(200).json({
-                success: true,
+            return res.status(400).json({
+                success: false,
                 token: token,
                 userData,
                 message: "Please select a course"

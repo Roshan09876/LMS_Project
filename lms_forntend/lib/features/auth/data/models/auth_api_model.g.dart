@@ -12,7 +12,9 @@ AuthApiModel _$AuthApiModelFromJson(Map<String, dynamic> json) => AuthApiModel(
       userName: json['userName'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
       password: json['password'] as String?,
-      selectedCourse: json['selectedCourse'] as List<dynamic>?,
+      selectedCourse: (json['selectedCourse'] as List<dynamic>?)
+          ?.map((e) => CourseModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
       image: json['image'] as String?,
     );
 

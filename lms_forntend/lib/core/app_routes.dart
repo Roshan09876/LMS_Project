@@ -3,6 +3,7 @@ import 'package:learn_management_system/core/test.dart';
 import 'package:learn_management_system/features/auth/presentation/view/getting_started.dart';
 import 'package:learn_management_system/features/auth/presentation/view/login_view.dart';
 import 'package:learn_management_system/features/auth/presentation/view/register_view.dart';
+import 'package:learn_management_system/features/course/presentation/view/select_course.dart';
 import 'package:learn_management_system/features/home/dashboard_view.dart';
 import 'package:learn_management_system/features/home/presentation/view/bottom_view.dart';
 import 'package:learn_management_system/features/profile/presentation/widgets/edit_profile.dart';
@@ -18,6 +19,7 @@ class AppRoute {
   static String dashboardViewRoute = '/dashboardViewRoute';
   static String testViewRoute = '/testViewRoute';
   static String editprofileViewRoute = '/editprofileViewRoute';
+  static String selectcourseViewRoute = '/selectcourseViewRoute';
 
   static getApplicationRoute() {
     return {
@@ -29,6 +31,7 @@ class AppRoute {
       chooseCourseRoute: (context) => const ChooseCourse(),
       testViewRoute: (context) => const Test(),
       editprofileViewRoute: (context) => const EditProfileView(),
+      selectcourseViewRoute: (context) => const SelectCourseView(),
     };
   }
 }

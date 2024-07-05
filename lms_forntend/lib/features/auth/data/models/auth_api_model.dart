@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:learn_management_system/features/auth/domain/entity/auth_entity.dart';
+import 'package:learn_management_system/features/course/model/course_model.dart';
 
 part 'auth_api_model.g.dart';
 
@@ -10,7 +11,7 @@ class AuthApiModel {
   final String? userName;
   final String? phoneNumber;
   final String? password;
-  final List<dynamic>? selectedCourse;
+  final List<CourseModel>? selectedCourse;
   final String? image;
 
   AuthApiModel({
