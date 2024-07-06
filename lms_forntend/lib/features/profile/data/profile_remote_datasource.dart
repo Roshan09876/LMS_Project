@@ -9,6 +9,7 @@ import 'package:learn_management_system/core/network/httpservice.dart';
 import 'package:learn_management_system/core/provider/flutter_secure_storage_provider.dart';
 import 'package:learn_management_system/features/auth/data/models/auth_api_model.dart';
 import 'package:learn_management_system/features/auth/domain/entity/auth_entity.dart';
+import 'package:learn_management_system/features/book/model/book_model.dart';
 import 'package:learn_management_system/features/course/model/course_model.dart';
 
 final profileRemoteDatasourceProvider =
@@ -25,60 +26,88 @@ class ProfileRemoteDatasource {
   ProfileRemoteDatasource(
       {required this.flutterSecureStorage, required this.dio});
 
-Future<Either<Failure, List<AuthEntity>>> getProfile() async {
-  try {
-    final token = await flutterSecureStorage.read(key: 'token');
-    if (token == null) {
-      return Left(Failure(error: 'An Unexpected Error Occurred'));
-    }
-    final decodedToken = JwtDecoder.decode(token);
-    final userID = decodedToken['id'];
-    if (userID == null) {
-      return Left(Failure(error: 'An Unexpected Error Occurred'));
-    }
-    final url = '${ApiEndpoints.getProfile}/$userID';
-    Response response = await dio.get(
-      url,
-      queryParameters: {'id': userID},
-      options: Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      ),
-    );
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      final responseData = response.data;
-      if (responseData is Map<String, dynamic> &&
-          responseData['success'] == true &&
-          responseData.containsKey('user')) {
-        var userJSON = responseData['user'] as Map<String, dynamic>;
-        List<dynamic> selectedCourseIds = userJSON['selectedCourse'] ?? [];
-        List<CourseModel> selectedCourses = selectedCourseIds.map((courseId) {
-          // Assuming CourseModel has a constructor that takes an ID
-          return CourseModel(id: courseId);
-        }).toList();
 
-        AuthEntity user = AuthEntity(
-          fullName: userJSON['fullName'],
-          email: userJSON['email'],
-          userName: userJSON['userName'],
-          phoneNumber: userJSON['phoneNumber'],
-          password: userJSON['password'],
-          selectedCourse: userJSON['selectedCourse'],
-          image: userJSON['image'],
-        );
-        return Right([user]);
-      } else {
-        return Left(Failure(error: 'User data not found in response'));
+  Future<Either<Failure, List<AuthEntity>>> getProfile() async {
+    try {
+      final token = await flutterSecureStorage.read(key: 'token');
+      if (token == null) {
+        return Left(Failure(error: 'An Unexpected Error Occurred'));
       }
-    } else {
-      return Left(Failure(error: 'Failed to load profile'));
-    }
-  } catch (e) {
-    return Left(Failure(error: e.toString()));
-  }
-}
+      final decodedToken = JwtDecoder.decode(token);
+      final userID = decodedToken['id'];
+      if (userID == null) {
+        return Left(Failure(error: 'An Unexpected Error Occurred'));
+      }
+      final url = '${ApiEndpoints.getProfile}/$userID';
+      Response response = await dio.get(
+        url,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseData = response.data;
+        if (responseData is Map<String, dynamic> &&
+            responseData['success'] == true &&
+            responseData.containsKey('user')) {
+          var userJSON = responseData['user'] as Map<String, dynamic>;
 
+          // Map selectedCourse to CourseModel objects
+          List<CourseModel> selectedCourses = [];
+          if (userJSON.containsKey('selectedCourse') &&
+              userJSON['selectedCourse'] is List) {
+            selectedCourses =
+                (userJSON['selectedCourse'] as List).map((course) {
+              if (course is Map<String, dynamic>) {
+                return CourseModel(
+                  id: course['_id'],
+                  name: course['name'],
+                  description: course['description'],
+                  image: course['image'],
+                );
+              } else {
+                return CourseModel(id: course.toString());
+              }
+            }).toList();
+          }
+
+            List<BookModel> books = [];
+          if (responseData.containsKey('books') &&
+              responseData['books'] is List) {
+            books = (responseData['books'] as List)
+                .map((book) => BookModel(
+                      title: book['title'],
+                      subtitle: book['subtitle'] ?? '',
+                      description: book['description'] ?? '',
+                      image: book['image'] ?? '',
+                      course: book['course'] ?? '',
+                    ))
+                .toList();
+          }
+
+          AuthEntity user = AuthEntity(
+            fullName: userJSON['fullName'],
+            email: userJSON['email'],
+            userName: userJSON['userName'],
+            phoneNumber: userJSON['phoneNumber'],
+            password: userJSON['password'],
+            selectedCourse: selectedCourses,
+            image: userJSON['image'],
+            books: books,
+          );
+          return Right([user]);
+        } else {
+          return Left(Failure(error: 'User data not found in response'));
+        }
+      } else {
+        return Left(Failure(error: 'Failed to load profile'));
+      }
+    } catch (e) {
+      return Left(Failure(error: e.toString()));
+    }
+  }
 
   Future<Either<Failure, bool>> updateProfile(AuthEntity authEntity) async {
     try {
@@ -114,6 +143,5 @@ Future<Either<Failure, List<AuthEntity>>> getProfile() async {
     } on DioException catch (e) {
       return Left(Failure(error: e.response!.data['message']));
     }
-
   }
 }

@@ -9,16 +9,13 @@ class CourseView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80),
-        child: AppBar(
-            backgroundColor: kButton,
-            title: const ReusableText(
-                text: 'Courses',
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: kLight)),
-      ),
+      appBar: AppBar(
+          backgroundColor: kButton,
+          title: const ReusableText(
+              text: 'Courses',
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+              color: kLight)),
       body: ListView.builder(
           itemCount: 5,
           itemBuilder: (context, index) {

@@ -9,8 +9,7 @@ class DashboardView extends ConsumerStatefulWidget {
   const DashboardView({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _DashboardViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _DashboardViewState();
 }
 
 class _DashboardViewState extends ConsumerState<DashboardView> {
@@ -19,17 +18,34 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
     return Consumer(
       builder: (context, watch, child) {
         final authState = ref.watch(authViewModelProvider);
+        
 
-        // Check if selectedCourse is empty or null
         if (authState.currentUser.selectedCourse == null ||
             authState.currentUser.selectedCourse!.isEmpty) {
-          return SelectCourseView(); // Show SelectCourseView if no course selected
+          return SelectCourseView();
         } else {
           return Scaffold(
             body: Stack(
               children: [
                 Container(
                   color: kMilkLight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 300),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Card(
+                              child: Text('fghjm'),
+                            ),
+                            Card(
+                              child: Text('fghjm'),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                 ),
                 Container(
                   height: 250,

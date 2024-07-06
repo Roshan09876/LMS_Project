@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
+import 'package:learn_management_system/features/book/model/book_model.dart';
 import 'package:learn_management_system/features/course/model/course_model.dart';
 
 class AuthEntity extends Equatable {
@@ -10,8 +11,9 @@ class AuthEntity extends Equatable {
   final String? phoneNumber;
   final String? password;
   final bool? isAdmin;
-  final List<CourseModel>? selectedCourse; // Changed to CourseModel
+  final List<CourseModel>? selectedCourse; 
   final String? image;
+  final List<BookModel>? books; 
 
   AuthEntity({
     this.id,
@@ -23,6 +25,7 @@ class AuthEntity extends Equatable {
     this.isAdmin,
     this.selectedCourse,
     this.image,
+    this.books
   });
 
   @override

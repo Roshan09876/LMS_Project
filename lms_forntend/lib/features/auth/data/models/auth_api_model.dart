@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:learn_management_system/features/auth/domain/entity/auth_entity.dart';
+import 'package:learn_management_system/features/book/model/book_model.dart';
 import 'package:learn_management_system/features/course/model/course_model.dart';
 
 part 'auth_api_model.g.dart';
@@ -13,6 +14,7 @@ class AuthApiModel {
   final String? password;
   final List<CourseModel>? selectedCourse;
   final String? image;
+  final List<BookModel>? books;
 
   AuthApiModel({
     this.fullName,
@@ -22,6 +24,7 @@ class AuthApiModel {
     this.password,
     this.selectedCourse,
     this.image,
+    this.books
   });
 
   // Convert from AuthEntity to AuthApiModel
@@ -34,6 +37,7 @@ class AuthApiModel {
       password: authEntity.password,
       selectedCourse: authEntity.selectedCourse,
       image: authEntity.image,
+      books: authEntity.books
     );
   }
 
@@ -54,6 +58,7 @@ class AuthApiModel {
       password: password,
       selectedCourse: selectedCourse,
       image: image,
+      books: books
     );
   }
 }

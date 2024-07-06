@@ -35,8 +35,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
           backgroundColor: kButton,
           title: const ReusableText(
               text: 'My Profile',
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
               color: kLight)),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -137,7 +137,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                           color: Colors.black),
                                       _gap,
                                       ReusableText(
-                                          text: 'Java',
+                                          text: '${profile.selectedCourse!.first.name}',
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
                                           color: Colors.black),

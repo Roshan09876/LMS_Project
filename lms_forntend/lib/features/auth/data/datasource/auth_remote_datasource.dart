@@ -7,6 +7,8 @@ import 'package:learn_management_system/config/constant/api_endpoints.dart';
 import 'package:learn_management_system/core/network/httpservice.dart';
 import 'package:learn_management_system/core/provider/flutter_secure_storage_provider.dart';
 import 'package:learn_management_system/features/auth/domain/entity/auth_entity.dart';
+import 'package:learn_management_system/features/book/model/book_model.dart';
+import 'package:learn_management_system/features/course/model/course_model.dart';
 
 final authRemoteDataSourceProvider = Provider<AuthRemoteDatasource>((ref) =>
     AuthRemoteDatasource(
@@ -35,6 +37,7 @@ class AuthRemoteDatasource {
     }
   }
 
+
   Future<Either<Failure, AuthEntity>> login(String userName, String password) async {
     try {
       final url = ApiEndpoints.login;
@@ -42,31 +45,67 @@ class AuthRemoteDatasource {
         "userName": userName,
         "password": password,
       });
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         final token = response.data['token'];
         final userData = response.data['userData'];
-       final userName = response.data['userData']['userName'];
-        final password = response.data['userData']['password'];
-        final authEntity = AuthEntity.fromJson({
-          'fullName': userData['fullName'],
-          'email': userData['email'],
-          'userName': userData['userName'],
-          'phoneNumber': userData['phoneNumber'],
-          'password': userData['password'],
-          'selectedCourse': userData['selectedCourse'],
-          'image': userData['image'],
-        });
+
+        // Map selectedCourse to CourseModel objects
+        List<CourseModel> selectedCourses = [];
+        if (userData.containsKey('selectedCourse') &&
+            userData['selectedCourse'] is List) {
+          selectedCourses = (userData['selectedCourse'] as List)
+              .map((course) => CourseModel(
+                    id: course['_id'],
+                    name: course['name'],
+                    description: course['description'],
+                    image: course['image'],
+                  ))
+              .toList();
+        }
+
+        // Map books to BookModel objects
+        List<BookModel> books = [];
+        if (response.data.containsKey('books') &&
+            response.data['books'] is List) {
+          books = (response.data['books'] as List)
+              .map((book) => BookModel(
+                    title: book['title'],
+                    subtitle: book['subtitle'] ?? "",
+                    description: book['description'] ?? "",
+                    image: book['image'] ?? "",
+                    course: book['course'] ?? "",
+                  ))
+              .toList();
+        }
+
+        final authEntity = AuthEntity(
+          fullName: userData['fullName'],
+          email: userData['email'],
+          userName: userData['userName'],
+          phoneNumber: userData['phoneNumber'],
+          password: userData['password'],
+          selectedCourse: selectedCourses,
+          image: userData['image'],
+          books: books, // Assign the mapped books list
+        );
+
         await flutterSecureStorage.write(key: "token", value: token);
         await flutterSecureStorage.write(key: 'userName', value: userName);
         await flutterSecureStorage.write(key: 'password', value: password);
+
         return Right(authEntity);
       } else {
         return Left(Failure(
-            error: response.data['message'],
-            statusCode: response.statusCode.toString()));
+          error: response.data['message'],
+          statusCode: response.statusCode.toString(),
+        ));
       }
     } on DioException catch (e) {
       return Left(Failure(error: e.response!.data['message']));
+    } catch (e) {
+      return Left(Failure(error: e.toString()));
     }
   }
+
 }

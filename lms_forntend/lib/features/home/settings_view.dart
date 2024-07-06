@@ -35,8 +35,8 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
           backgroundColor: kButton,
           title: const ReusableText(
               text: 'Settings',
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
               color: kLight),
         ),
         body: Padding(

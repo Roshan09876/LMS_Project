@@ -61,8 +61,8 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
         backgroundColor: kButton,
         title: const ReusableText(
             text: 'Edit Profile',
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
             color: kLight),
         leading: IconButton(
             onPressed: () {
@@ -75,142 +75,144 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _gap,
-            Center(
-              child: CircleAvatar(
-                // backgroundColor: Colors.transparent,
-                radius: 60,
-                backgroundImage:
-                    profile.image != null && profile.image!.isNotEmpty
-                        ? NetworkImage(profile.image!)
-                        : AssetImage('assets/images/login_icon.png'),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _gap,
+              Center(
+                child: CircleAvatar(
+                  // backgroundColor: Colors.transparent,
+                  radius: 60,
+                  backgroundImage:
+                      profile.image != null && profile.image!.isNotEmpty
+                          ? NetworkImage(profile.image!)
+                          : AssetImage('assets/images/login_icon.png'),
+                ),
               ),
-            ),
-            _gap,
-            _gap,
-            _gap,
-            _gap,
-            const Text('UserName'),
-            Row(
-              children: [
-                const Icon(Icons.supervised_user_circle_rounded), // Prefix Icon
-                const VerticalDivider(
-                  thickness: 1,
-                  color: kDark,
-                ), // Vertical Divider
-                Expanded(
-                  child: TextFormField(
-                    controller: _userNameController,
-                    decoration: const InputDecoration(
-                        // hintText: 'Please Enter your Full Name',
-                        ),
+              _gap,
+              _gap,
+              _gap,
+              _gap,
+              const Text('UserName'),
+              Row(
+                children: [
+                  const Icon(Icons.supervised_user_circle_rounded), // Prefix Icon
+                  const VerticalDivider(
+                    thickness: 1,
+                    color: kDark,
+                  ), // Vertical Divider
+                  Expanded(
+                    child: TextFormField(
+                      controller: _userNameController,
+                      decoration: const InputDecoration(
+                          // hintText: 'Please Enter your Full Name',
+                          ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            _gap,
-            const Text('Full Name'),
-            Row(
-              children: [
-                const Icon(Icons.supervised_user_circle_rounded), // Prefix Icon
-                const VerticalDivider(
-                  thickness: 1,
-                  color: kDark,
-                ), // Vertical Divider
-                Expanded(
-                  child: TextFormField(
-                    controller: _fullNameController,
-                    decoration: const InputDecoration(
-                        // hintText: 'Please Enter your Full Name',
-                        ),
+                ],
+              ),
+              _gap,
+              const Text('Full Name'),
+              Row(
+                children: [
+                  const Icon(Icons.supervised_user_circle_rounded), // Prefix Icon
+                  const VerticalDivider(
+                    thickness: 1,
+                    color: kDark,
+                  ), // Vertical Divider
+                  Expanded(
+                    child: TextFormField(
+                      controller: _fullNameController,
+                      decoration: const InputDecoration(
+                          // hintText: 'Please Enter your Full Name',
+                          ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            _gap,
-            const Text('Email'),
-            Row(
-              children: [
-                const Icon(Icons.email), // Prefix Icon
-                const VerticalDivider(
-                  thickness: 1,
-                  color: kDark,
-                ), // Vertical Divider
-                Expanded(
-                  child: TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(
-                        // hintText: 'Please Enter your Full Name',
-                        ),
+                ],
+              ),
+              _gap,
+              const Text('Email'),
+              Row(
+                children: [
+                  const Icon(Icons.email), // Prefix Icon
+                  const VerticalDivider(
+                    thickness: 1,
+                    color: kDark,
+                  ), // Vertical Divider
+                  Expanded(
+                    child: TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                          // hintText: 'Please Enter your Full Name',
+                          ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            _gap,
-            const Text('Phone Number'),
-            Row(
-              children: [
-                const Icon(Icons.phone), // Prefix Icon
-                const VerticalDivider(
-                  thickness: 1,
-                  color: kDark,
-                ), // Vertical Divider
-                Expanded(
-                  child: TextFormField(
-                    controller: _phoneNumberController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                        // hintText: 'Please Enter your Full Name',
-                        ),
+                ],
+              ),
+              _gap,
+              const Text('Phone Number'),
+              Row(
+                children: [
+                  const Icon(Icons.phone), // Prefix Icon
+                  const VerticalDivider(
+                    thickness: 1,
+                    color: kDark,
+                  ), // Vertical Divider
+                  Expanded(
+                    child: TextFormField(
+                      controller: _phoneNumberController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                          // hintText: 'Please Enter your Full Name',
+                          ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            _gap,
-            _gap,
-            _gap,
-            _gap,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                OutlinedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      ref.read(profileViewModelProvider.notifier).resetState();
-                    },
-                    child: ReusableText(
-                        text: 'Cancel',
-                        fontSize: 15,
-                        fontWeight: FontWeight.w100,
-                        color: Color(kButton.value))),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        minimumSize: Size(120, 40),
-                        backgroundColor: Color(kButton.value)),
-                    onPressed: () {
-                      final authEntity = AuthEntity().copyWith(
-                        fullName: _fullNameController.text.trim(),
-                        userName: _userNameController.text.trim(),
-                        phoneNumber: _phoneNumberController.text.trim(),
-                        email: _emailController.text.trim(),
-                        password: _passwordController.text.trim(),
-                        image: _imageController.text.trim(),
-                      );
-                      ref
-                          .read(profileViewModelProvider.notifier)
-                          .updateProfile(authEntity, context);
-                    },
-                    child: ReusableText(
-                        text: 'Save',
-                        fontSize: 15,
-                        fontWeight: FontWeight.w100,
-                        color: Color(kLight.value)))
-              ],
-            )
-          ],
+                ],
+              ),
+              _gap,
+              _gap,
+              _gap,
+              _gap,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  OutlinedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        ref.read(profileViewModelProvider.notifier).resetState();
+                      },
+                      child: ReusableText(
+                          text: 'Cancel',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w100,
+                          color: Color(kButton.value))),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          minimumSize: Size(120, 40),
+                          backgroundColor: Color(kButton.value)),
+                      onPressed: () {
+                        final authEntity = AuthEntity().copyWith(
+                          fullName: _fullNameController.text.trim(),
+                          userName: _userNameController.text.trim(),
+                          phoneNumber: _phoneNumberController.text.trim(),
+                          email: _emailController.text.trim(),
+                          password: _passwordController.text.trim(),
+                          image: _imageController.text.trim(),
+                        );
+                        ref
+                            .read(profileViewModelProvider.notifier)
+                            .updateProfile(authEntity, context);
+                      },
+                      child: ReusableText(
+                          text: 'Save',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w100,
+                          color: Color(kLight.value)))
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

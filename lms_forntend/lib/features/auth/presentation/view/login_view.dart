@@ -52,7 +52,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 _gap,
                 _gap,
                 Padding(
-                  padding: const EdgeInsets.only(left: 150),
+                  padding: const EdgeInsets.only(left: 180),
                   child: Container(
                     height: 200,
                     decoration: const BoxDecoration(
@@ -60,6 +60,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                             image: AssetImage('assets/images/login_icon.png'))),
                   ),
                 ),
+                _gap,
                 Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,28 +185,13 @@ class _LoginViewState extends ConsumerState<LoginView> {
                             context, AppRoute.registerViewRoute);
                       },
                       child: const ReusableText(
-                        text: '  SignUp',
+                        text: 'SignUp',
                         color: kButton,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     )
                   ],
-                ),
-                _gap,
-                _gap,
-                 SettingsItem(
-                  onTap: () {
-                    Navigator.pushNamed(context, AppRoute.selectcourseViewRoute);
-                  },
-                  icons: Icons.select_all,
-                  iconStyle: IconStyle(
-                    iconsColor: Colors.white,
-                    withBackground: true,
-                    backgroundColor: Color(kButton.value),
-                  ),
-                  title: 'Choose Course',
-                  subtitle: "Courses",
                 ),
               ],
             ),
