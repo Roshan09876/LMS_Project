@@ -87,14 +87,13 @@ class _IdCardState extends ConsumerState<IdCard> {
                         borderRadius: BorderRadius.circular(60),
                       ),
                       child: CircleAvatar(
-                                  backgroundColor: Colors.transparent,
-                                  radius: 50,
-                                  backgroundImage: profile?.image != null &&
-                                          profile!.image!.isNotEmpty
-                                      ? NetworkImage(profile!.image!)
-                                      : AssetImage(
-                                          'assets/images/login_icon.png'),
-                                ),
+                        backgroundColor: Colors.transparent,
+                        radius: 50,
+                        backgroundImage:
+                            profile?.image != null && profile!.image!.isNotEmpty
+                                ? NetworkImage(profile!.image!)
+                                : AssetImage('assets/images/login_icon.png'),
+                      ),
                     ),
                   ],
                 ),
@@ -136,6 +135,17 @@ class _IdCardState extends ConsumerState<IdCard> {
                         children: [
                           Row(
                             children: [
+                              Icon(Icons.usb_rounded, color: kDark),
+                              const SizedBox(width: 8),
+                              ReusableText(
+                                  text: '${profile.id}',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: kDark),
+                            ],
+                          ),
+                          Row(
+                            children: [
                               Icon(Icons.badge, color: kDark),
                               const SizedBox(width: 8),
                               ReusableText(
@@ -149,36 +159,10 @@ class _IdCardState extends ConsumerState<IdCard> {
                           const SizedBox(height: 8),
                           Row(
                             children: [
-                              Icon(Icons.badge, color: kDark),
-                              const SizedBox(width: 8),
-                              ReusableText(
-                                text: 'ID Number: ${profile.id}',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: kDark,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
                               Icon(Icons.business, color: kDark),
                               const SizedBox(width: 8),
                               ReusableText(
                                 text: 'Contact: ${profile.phoneNumber}',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: kDark,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Icon(Icons.calendar_today, color: kDark),
-                              const SizedBox(width: 8),
-                              ReusableText(
-                                text: 'Valid Till: ',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                                 color: kDark,

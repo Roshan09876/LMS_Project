@@ -150,13 +150,15 @@ const signin = async (req, res) => {
 
 const getBooksByCourse = async (selectedCourseIds) => {
     try {
+        // Find all books where the course ID matches any of the selectedCourseIds
         const books = await Book.find({ course: { $in: selectedCourseIds } });
-        return books;
+        return books; // Return the array of books found
     } catch (error) {
         console.error(`Error fetching books: ${error}`);
-        return [];
+        return []; // Return an empty array if there's an error
     }
 };
+
 
 //User Profile 
 const userProfile = async (req, res) => {

@@ -7,6 +7,7 @@ import 'package:learn_management_system/features/auth/presentation/view/register
 import 'package:learn_management_system/features/course/presentation/view/select_course.dart';
 import 'package:learn_management_system/features/home/dashboard_view.dart';
 import 'package:learn_management_system/features/home/presentation/view/bottom_view.dart';
+import 'package:learn_management_system/features/home/books_detail_view.dart';
 import 'package:learn_management_system/features/home/widgets_page/id_card.dart';
 import 'package:learn_management_system/features/profile/presentation/widgets/edit_profile.dart';
 
@@ -24,6 +25,7 @@ class AppRoute {
   static String selectcourseViewRoute = '/selectcourseViewRoute';
   static String idCardViewRoute = '/idCardViewRoute';
   static String chatPageViewRoute = '/chatPageViewRoute';
+  static String booksViewRoute = '/booksViewRoute';
 
   static getApplicationRoute() {
     return {
@@ -38,6 +40,7 @@ class AppRoute {
       selectcourseViewRoute: (context) => const SelectCourseView(),
       chatPageViewRoute: (context) => const ChatPage(),
       idCardViewRoute: (context) => const IdCard(),
+      booksViewRoute: (context) => const BooksDetailView(),
     };
   }
 }

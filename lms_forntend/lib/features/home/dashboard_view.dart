@@ -6,7 +6,6 @@ import 'package:learn_management_system/config/common/app_color.dart';
 import 'package:learn_management_system/config/common/reusable_text.dart';
 import 'package:learn_management_system/core/app_routes.dart';
 import 'package:learn_management_system/features/auth/presentation/view_model/auth_view_model.dart';
-import 'package:learn_management_system/features/book/presentation/state/book_state.dart';
 import 'package:learn_management_system/features/book/presentation/view_model/book_view_model.dart';
 import 'package:learn_management_system/features/course/presentation/view/select_course.dart';
 import 'package:learn_management_system/features/profile/presentation/view_model/profile_view_model.dart';
@@ -74,63 +73,65 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                                   ),
                                   // margin: const EdgeInsets.all(8.0),
                                   elevation: 5,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Container(
-                                              height: 70,
-                                              width: 100,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                image: DecorationImage(
-                                                  image: _getImageProvider(
-                                                      "${book.image}"),
-                                                  fit: BoxFit.cover,
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        AppRoute.booksViewRoute,
+                                        arguments: book,
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Container(
+                                                height: 70,
+                                                width: 100,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  image: DecorationImage(
+                                                    image: _getImageProvider(
+                                                        "${book.image}"),
+                                                    fit: BoxFit.cover,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            SizedBox(width: 16),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "${book.title}",
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                              SizedBox(width: 16),
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "${book.title}",
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  SizedBox(height: 8),
-                                                  Text(
-                                                    book.subtitle ?? '',
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.grey[600],
+                                                    SizedBox(height: 8),
+                                                    Text(
+                                                      book.subtitle ?? '',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.grey[600],
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 16),
-                                        // Text(
-                                        //   book.description,
-                                        //   style: TextStyle(
-                                        //     fontSize: 14,
-                                        //     color: Colors.grey[800],
-                                        //   ),
-                                        // ),
-                                      ],
+                                            ],
+                                          ),
+                                          SizedBox(height: 16),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

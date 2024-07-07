@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:learn_management_system/config/common/failure.dart';
 import 'package:learn_management_system/config/constant/api_endpoints.dart';
 import 'package:learn_management_system/core/network/httpservice.dart';
@@ -22,11 +23,17 @@ class BookRemoteDatasource {
 
   Future<Either<Failure, List<BookModel>>> getBeginnerLevelBooks() async {
     try {
-      final url = ApiEndpoints.getBeginnerBook;
+      // final url = ApiEndpoints.getBeginnerBook;
       final token = await flutterSecureStorage.read(key: 'token');
       if (token == null) {
         return Left(Failure(error: 'An Unexpected token Error'));
       }
+      final decodedToken = JwtDecoder.decode(token);
+      final userID = decodedToken['id'];
+      if (userID == null) {
+        return Left(Failure(error: 'An Unexpected Error Occurred'));
+      }
+      final url = "${ApiEndpoints.getBeginnerBook}/$userID";
       Response response = await dio.get(
         url,
         options: Options(

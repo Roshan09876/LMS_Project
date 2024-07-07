@@ -87,6 +87,7 @@ class ProfileRemoteDatasource {
           }
 
           AuthEntity user = AuthEntity(
+            id: userJSON['_id'],
             fullName: userJSON['fullName'],
             email: userJSON['email'],
             userName: userJSON['userName'],

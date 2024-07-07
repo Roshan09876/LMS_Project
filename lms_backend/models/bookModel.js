@@ -19,6 +19,10 @@ const bookSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course",
         required: true
+    },
+    level:{
+        type: String,
+        enum: ["Beginner", "Easy", "Medium", "Hard", "Advance"]
     }
 });
 
