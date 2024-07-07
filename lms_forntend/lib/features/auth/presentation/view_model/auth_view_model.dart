@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_management_system/config/common/show_snack_bar.dart';
 import 'package:learn_management_system/core/app_routes.dart';
@@ -36,6 +37,11 @@ class AuthViewModel extends StateNotifier<AuthState> {
         error: null,
         showMessage: true,
       );
+      EasyLoading.show(status: 'Please Wait...', maskType: EasyLoadingMaskType.black);
+       Future.delayed(const Duration(seconds: 2), () {
+        Navigator.pushNamed(context, AppRoute.loginViewRoute);
+        EasyLoading.dismiss();
+      });
       showSnackBar(
           message: 'User Created Successfully',
           context: context,
@@ -64,9 +70,13 @@ class AuthViewModel extends StateNotifier<AuthState> {
         showMessage: true,
         currentUser: success
       );
-      showSnackBar(
-          message: 'Login Successfully', context: context, color: Colors.green);
-      Navigator.pushNamed(context, AppRoute.bottomViewRoute);
+      EasyLoading.show(status: 'Loggin in',);
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.pushNamed(context, AppRoute.bottomViewRoute);
+        EasyLoading.dismiss();
+      });
+      // showSnackBar(
+      //     message: 'Login Successfully', context: context, color: Colors.green);
     });
   }
 }

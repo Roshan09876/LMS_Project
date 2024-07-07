@@ -2,11 +2,13 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:learn_management_system/config/common/app_color.dart';
 import 'package:learn_management_system/config/common/reusable_text.dart';
 import 'package:learn_management_system/core/app_routes.dart';
+import 'package:learn_management_system/core/provider/local_authentication_service_provider.dart';
 import 'package:learn_management_system/features/profile/presentation/view_model/profile_view_model.dart';
 
 class SettingsView extends ConsumerStatefulWidget {
@@ -99,19 +101,60 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                 ),
                 SettingsItem(
                   onTap: () {},
-                  icons: Icons.fingerprint,
+                  icons: Icons.face,
                   iconStyle: IconStyle(
                     iconsColor: Colors.white,
                     withBackground: true,
-                    backgroundColor: Colors.red,
+                    backgroundColor: Colors.blue.shade900,
                   ),
-                  title: 'Biometric Authentication',
-                  subtitle: "Toggle",
-                  trailing: Switch.adaptive(
-                    value: true,
-                    onChanged: (value) {},
+                  title: 'Biometric Login',
+                  subtitle: "Login with fingerprint or face id",
+                  trailing: Consumer(
+                    builder: (context, ref, _) {
+                      final state =
+                          ref.watch(localAuthenticationServiceProvider);
+                      return Switch.adaptive(
+                        value: state,
+                        onChanged: (value) async {
+                          final isAuthenticated = await ref
+                              .read(localAuthenticationServiceProvider.notifier)
+                              .authWithBiometric(value);
+
+                          if (isAuthenticated) {
+                            EasyLoading.showSuccess(
+                              value
+                                  ? 'Biometric login enabled'
+                                  : 'Biometric login disabled',
+                              duration: Duration(seconds: 2),
+                            );
+                            // SharedPreferences prefs = await SharedPreferences.getInstance();
+                            // await prefs.setBool('biometric_login', value);
+                          } else {
+                            EasyLoading.showError(
+                              'Biometric authentication failed',
+                              duration: Duration(seconds: 2),
+                            );
+                          }
+                        },
+                      );
+                    },
                   ),
                 ),
+                // SettingsItem(
+                //   onTap: () {},
+                //   icons: Icons.fingerprint,
+                //   iconStyle: IconStyle(
+                //     iconsColor: Colors.white,
+                //     withBackground: true,
+                //     backgroundColor: Colors.red,
+                //   ),
+                //   title: 'Biometric Authentication',
+                //   subtitle: "Toggle",
+                //   trailing: Switch.adaptive(
+                //     value: true,
+                //     onChanged: (value) {},
+                //   ),
+                // ),
                 SettingsItem(
                   onTap: () {},
                   icons: Icons.info_rounded,

@@ -1,12 +1,10 @@
-import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_management_system/core/app_routes.dart';
 import 'package:learn_management_system/config/common/app_color.dart';
 import 'package:learn_management_system/config/common/reusable_text.dart';
+import 'package:learn_management_system/core/provider/flutter_secure_storage_provider.dart';
 import 'package:learn_management_system/features/auth/presentation/view_model/auth_view_model.dart';
-import 'package:learn_management_system/features/home/presentation/view_model/home_view_model.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -18,6 +16,7 @@ class LoginView extends ConsumerStatefulWidget {
 class _LoginViewState extends ConsumerState<LoginView> {
   final key = GlobalKey<FormState>();
   bool _obsecureText = true;
+  bool? rememberMe = false;
   final _gap = const SizedBox(
     height: 15,
   );
@@ -25,10 +24,58 @@ class _LoginViewState extends ConsumerState<LoginView> {
   final _passwordController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _loadSavedCredentials();
+  }
+
+  Future<void> _loadSavedCredentials() async {
+    final flutterSecureStorage = ref.read(flutterSecureStorageProvider);
+    String? savedUserName = await flutterSecureStorage.read(key: 'userName');
+    String? savedPassword = await flutterSecureStorage.read(key: 'password');
+
+    if (savedUserName != null) {
+      setState(() {
+        _userNameController.text = savedUserName;
+        rememberMe = true;
+      });
+    }
+
+    if (savedPassword != null) {
+      setState(() {
+        _passwordController.text = savedPassword;
+      });
+    }
+  }
+
+  @override
   void dispose() {
     _userNameController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> saveCredentials(String userName, String password) async {
+    final flutterSecureStorage = ref.read(flutterSecureStorageProvider);
+    await flutterSecureStorage.write(key: 'userName', value: userName);
+    await flutterSecureStorage.write(key: 'password', value: password);
+  }
+
+  void _onRemembermeTapped(bool newValue) async {
+    if (newValue) {
+      if (_userNameController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty) {
+        await saveCredentials(
+            _userNameController.text, _passwordController.text);
+      }
+    } else {
+      final flutterSecureStorage = ref.read(flutterSecureStorageProvider);
+      await flutterSecureStorage.delete(key: 'userName');
+      await flutterSecureStorage.delete(key: 'password');
+    }
+    setState(() {
+      rememberMe = newValue;
+    });
   }
 
   @override
@@ -131,11 +178,27 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           ),
                         ],
                       ),
-                      _gap,
-                      _gap,
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          Checkbox(
+                              value: rememberMe ?? false,
+                              onChanged: (value) {
+                                _onRemembermeTapped(value!);
+                              }),
+                          ReusableText(
+                              text: 'Remember me',
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: kButton),
+                        ],
+                      )
                     ],
                   ),
                 ),
+                // _gap,
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size(330, 50),
@@ -163,10 +226,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Login with Biometric'),
-                     Icon(Icons.fingerprint),
+                    Icon(Icons.fingerprint),
                   ],
                 ),
-               
                 const SizedBox(
                   height: 10,
                 ),
