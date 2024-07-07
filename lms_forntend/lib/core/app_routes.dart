@@ -1,3 +1,4 @@
+import 'package:learn_management_system/ai_chatbot/chat_page.dart';
 import 'package:learn_management_system/choose_course.dart';
 import 'package:learn_management_system/core/test.dart';
 import 'package:learn_management_system/features/auth/presentation/view/getting_started.dart';
@@ -20,6 +21,7 @@ class AppRoute {
   static String testViewRoute = '/testViewRoute';
   static String editprofileViewRoute = '/editprofileViewRoute';
   static String selectcourseViewRoute = '/selectcourseViewRoute';
+  static String chatPageViewRoute = '/chatPageViewRoute';
 
   static getApplicationRoute() {
     return {
@@ -32,6 +34,7 @@ class AppRoute {
       testViewRoute: (context) => const Test(),
       editprofileViewRoute: (context) => const EditProfileView(),
       selectcourseViewRoute: (context) => const SelectCourseView(),
+      chatPageViewRoute: (context) => const ChatPage(),
     };
   }
 }

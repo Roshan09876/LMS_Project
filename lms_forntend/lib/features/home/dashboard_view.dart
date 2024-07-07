@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_management_system/config/common/app_color.dart';
 import 'package:learn_management_system/config/common/reusable_text.dart';
+import 'package:learn_management_system/core/app_routes.dart';
 import 'package:learn_management_system/features/auth/presentation/view_model/auth_view_model.dart';
 import 'package:learn_management_system/features/book/model/book_model.dart';
 import 'package:learn_management_system/features/course/presentation/view/select_course.dart';
@@ -141,12 +142,15 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                           Align(
                             alignment: Alignment.topLeft,
                             child: ReusableText(
-                                text: 'Quick Access for Learn Management System',
+                                text:
+                                    'Quick Access for Learn Management System',
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                                 color: kButton),
                           ),
-                              SizedBox(height: 20,),
+                          SizedBox(
+                            height: 20,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -188,8 +192,8 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                                     children: [
                                       CircleAvatar(
                                         backgroundColor: Colors.transparent,
-                                        backgroundImage:
-                                            AssetImage('assets/icons/progress.png'),
+                                        backgroundImage: AssetImage(
+                                            'assets/icons/progress.png'),
                                       ),
                                       ReusableText(
                                           text: 'Progress',
@@ -203,25 +207,32 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                               Container(
                                 height: 100,
                                 width: 100,
-                                child: Card(
-                                  elevation: 10,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5)),
-                                  color: Color(kButton.value),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundColor: Colors.transparent,
-                                        backgroundImage:
-                                            AssetImage('assets/icons/chatbot.png'),
-                                      ),
-                                      ReusableText(
-                                          text: 'ChatBot',
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(kLight.value)),
-                                    ],
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, AppRoute.chatPageViewRoute);
+                                  },
+                                  child: Card(
+                                    elevation: 10,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5)),
+                                    color: Color(kButton.value),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundColor: Colors.transparent,
+                                          backgroundImage: AssetImage(
+                                              'assets/icons/chatbot.png'),
+                                        ),
+                                        ReusableText(
+                                            text: 'ChatBot',
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(kLight.value)),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

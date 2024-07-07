@@ -119,7 +119,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                     backgroundColor: Colors.purple,
                   ),
                   title: 'About',
-                  subtitle: "Learn more about Ziar'App",
+                  subtitle: "Learn more about LearnEase App",
                 ),
               ]),
               SettingsGroup(
