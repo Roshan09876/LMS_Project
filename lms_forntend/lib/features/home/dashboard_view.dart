@@ -6,7 +6,8 @@ import 'package:learn_management_system/config/common/app_color.dart';
 import 'package:learn_management_system/config/common/reusable_text.dart';
 import 'package:learn_management_system/core/app_routes.dart';
 import 'package:learn_management_system/features/auth/presentation/view_model/auth_view_model.dart';
-import 'package:learn_management_system/features/book/model/book_model.dart';
+import 'package:learn_management_system/features/book/presentation/state/book_state.dart';
+import 'package:learn_management_system/features/book/presentation/view_model/book_view_model.dart';
 import 'package:learn_management_system/features/course/presentation/view/select_course.dart';
 import 'package:learn_management_system/features/profile/presentation/view_model/profile_view_model.dart';
 
@@ -21,7 +22,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref.read(profileViewModelProvider.notifier).getProfile();
+      await ref.read(bookViewModelProvider.notifier).getBeginnerBook();
     });
     super.initState();
   }
@@ -32,6 +33,8 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
       builder: (context, watch, child) {
         final authState = ref.watch(authViewModelProvider);
         final profileState = ref.watch(profileViewModelProvider);
+
+        final bookState = ref.watch(bookViewModelProvider);
 
         if (authState.currentUser.selectedCourse == null ||
             authState.currentUser.selectedCourse!.isEmpty) {
@@ -55,10 +58,12 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             itemCount:
-                                profileState.users?.first.books!.length ?? 0,
+                                // profileState.users?.first.books!.length ?? 0,
+                                bookState.books.length ?? 0,
                             itemBuilder: (context, index) {
                               final book =
-                                  profileState.users!.first.books![index];
+                                  // profileState.users!.first.books![index];
+                                  bookState.books![index];
                               return Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 3.0),

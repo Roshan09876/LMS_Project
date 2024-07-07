@@ -12,6 +12,7 @@ BookModel _$BookModelFromJson(Map<String, dynamic> json) => BookModel(
       description: json['description'] as String?,
       image: json['image'] as String?,
       course: json['course'] as String?,
+      level: json['level'] as String?,
     );
 
 Map<String, dynamic> _$BookModelToJson(BookModel instance) => <String, dynamic>{
@@ -20,4 +21,5 @@ Map<String, dynamic> _$BookModelToJson(BookModel instance) => <String, dynamic>{
       'description': instance.description,
       'image': instance.image,
       'course': instance.course,
+      'level': instance.level,
     };

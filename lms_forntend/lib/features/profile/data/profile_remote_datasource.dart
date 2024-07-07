@@ -10,7 +10,6 @@ import 'package:learn_management_system/core/provider/flutter_secure_storage_pro
 import 'package:learn_management_system/features/auth/domain/entity/auth_entity.dart';
 import 'package:learn_management_system/features/book/model/book_model.dart';
 import 'package:learn_management_system/features/course/model/course_model.dart';
-import 'package:learn_management_system/features/home/dashboard_view.dart';
 
 final profileRemoteDatasourceProvider =
     Provider<ProfileRemoteDatasource>((ref) {
@@ -82,6 +81,7 @@ class ProfileRemoteDatasource {
                       description: book['description'] ?? '',
                       image: book['image'] ?? '',
                       course: book['course'] ?? '',
+                      level: book['level'] ?? ''
                     ))
                 .toList();
           }
@@ -146,8 +146,4 @@ class ProfileRemoteDatasource {
     }
   }
 
-  // void _storeBook(List<BookModel> books) async {
-  //   bookModel.clear();
-  //   bookModel.addAll(books);
-  // }
 }

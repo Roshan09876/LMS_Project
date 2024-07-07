@@ -75,6 +75,7 @@ class AuthRemoteDatasource {
                     description: book['description'] ?? "",
                     image: book['image'] ?? "",
                     course: book['course'] ?? "",
+                    level: book['level'] ?? ""
                   ))
               .toList();
         }

@@ -11,12 +11,14 @@ class BookModel {
   final String? description;
   final String? image;
   final String? course;
+  final String? level;
   BookModel({
     this.title,
     this.subtitle,
     this.description,
     this.image,
-    required this.course,
+     this.course,
+    this.level
   });
 
   factory BookModel.fromJson(Map<String, dynamic> json) => _$BookModelFromJson(json);

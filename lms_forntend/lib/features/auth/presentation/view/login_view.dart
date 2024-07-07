@@ -5,6 +5,7 @@ import 'package:learn_management_system/config/common/app_color.dart';
 import 'package:learn_management_system/config/common/reusable_text.dart';
 import 'package:learn_management_system/core/provider/flutter_secure_storage_provider.dart';
 import 'package:learn_management_system/features/auth/presentation/view_model/auth_view_model.dart';
+import 'package:local_auth/local_auth.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -22,6 +23,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   );
   final _userNameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final LocalAuthentication localAuthentication = LocalAuthentication();
 
   @override
   void initState() {
@@ -29,6 +31,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
     _loadSavedCredentials();
   }
 
+//For Remember me
   Future<void> _loadSavedCredentials() async {
     final flutterSecureStorage = ref.read(flutterSecureStorageProvider);
     String? savedUserName = await flutterSecureStorage.read(key: 'userName');
@@ -77,6 +80,10 @@ class _LoginViewState extends ConsumerState<LoginView> {
       rememberMe = newValue;
     });
   }
+
+
+  //For Face/fingerPrint 
+  
 
   @override
   Widget build(BuildContext context) {
