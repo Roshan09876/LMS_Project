@@ -7,10 +7,10 @@ import 'package:learn_management_system/config/common/failure.dart';
 import 'package:learn_management_system/config/constant/api_endpoints.dart';
 import 'package:learn_management_system/core/network/httpservice.dart';
 import 'package:learn_management_system/core/provider/flutter_secure_storage_provider.dart';
-import 'package:learn_management_system/features/auth/data/models/auth_api_model.dart';
 import 'package:learn_management_system/features/auth/domain/entity/auth_entity.dart';
 import 'package:learn_management_system/features/book/model/book_model.dart';
 import 'package:learn_management_system/features/course/model/course_model.dart';
+import 'package:learn_management_system/features/home/dashboard_view.dart';
 
 final profileRemoteDatasourceProvider =
     Provider<ProfileRemoteDatasource>((ref) {
@@ -25,7 +25,6 @@ class ProfileRemoteDatasource {
 
   ProfileRemoteDatasource(
       {required this.flutterSecureStorage, required this.dio});
-
 
   Future<Either<Failure, List<AuthEntity>>> getProfile() async {
     try {
@@ -73,7 +72,7 @@ class ProfileRemoteDatasource {
             }).toList();
           }
 
-            List<BookModel> books = [];
+          List<BookModel> books = [];
           if (responseData.containsKey('books') &&
               responseData['books'] is List) {
             books = (responseData['books'] as List)
@@ -97,6 +96,7 @@ class ProfileRemoteDatasource {
             image: userJSON['image'],
             books: books,
           );
+          // _storeBook(books);
           return Right([user]);
         } else {
           return Left(Failure(error: 'User data not found in response'));
@@ -134,6 +134,7 @@ class ProfileRemoteDatasource {
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = response.data;
         print(responseData);
+
         return const Right(true);
       } else {
         return Left(Failure(
@@ -144,4 +145,9 @@ class ProfileRemoteDatasource {
       return Left(Failure(error: e.response!.data['message']));
     }
   }
+
+  // void _storeBook(List<BookModel> books) async {
+  //   bookModel.clear();
+  //   bookModel.addAll(books);
+  // }
 }

@@ -38,49 +38,57 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
               fontSize: 20,
               fontWeight: FontWeight.w500,
               color: kLight)),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SafeArea(
-          child: profilestate.isLoading
-              ? Center(child: CircularProgressIndicator())
-              : profile == null
-                  ? Center(child: Text('No profile data available.'))
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _gap,
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
+      body: SafeArea(
+        child: profilestate.isLoading
+            ? Center(child: CircularProgressIndicator())
+            : profile == null
+                ? Center(child: Text('No profile data available.'))
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Card(
+                        elevation: 7,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)),
+                        color: Color(kButton.value),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 50),
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  radius: 50,
+                                  backgroundImage: profile.image != null &&
+                                          profile.image!.isNotEmpty
+                                      ? NetworkImage(profile.image!)
+                                      : AssetImage(
+                                          'assets/images/login_icon.png'),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              ReusableText(
+                                  text: '${profile.userName}'.toUpperCase(),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(kLight.value)),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20),
-                                child: Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: Colors.transparent,
-                                      radius: 50,
-                                      backgroundImage: profile.image != null &&
-                                              profile.image!.isNotEmpty
-                                          ? NetworkImage(profile.image!)
-                                          : AssetImage(
-                                              'assets/images/login_icon.png'),
-                                    ),
-                                    SizedBox(
-                                      width: 40,
-                                    ),
-                                    ReusableText(
-                                        text:
-                                            '${profile.userName}'.toUpperCase(),
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(kButton.value)),
-                                  ],
-                                ),
-                              ),
-                              _gap,
-                              _gap,
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -137,7 +145,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                           color: Colors.black),
                                       _gap,
                                       ReusableText(
-                                          text: '${profile.selectedCourse!.first.name}',
+                                          text:
+                                              '${profile.selectedCourse!.first.name}',
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
                                           color: Colors.black),
@@ -168,10 +177,10 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                               )
                             ],
                           ),
-                        )
-                      ],
-                    ),
-        ),
+                        ),
+                      )
+                    ],
+                  ),
       ),
     );
   }

@@ -30,7 +30,7 @@ class CourseViewModel extends StateNotifier<CourseState> {
   }
 
   Future<void> selectCourse(
-      String courseId, BuildContext context, WidgetRef ref) async {
+      String courseId, BuildContext context) async {
     state = state.copyWith(isLoading: true);
     final result = await courseRemoteDatasource.selectCourse(courseId);
 

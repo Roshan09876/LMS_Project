@@ -91,7 +91,7 @@ class _SelectCourseViewState extends ConsumerState<SelectCourseView> {
                         if (course.id != null) {
                           await ref
                               .read(courseViewModelProvider.notifier)
-                              .selectCourse(course.id!, context, ref);
+                              .selectCourse(course.id!, context,);
                         } else {
                           // Handle the case where course.id is null
                           ScaffoldMessenger.of(context).showSnackBar(

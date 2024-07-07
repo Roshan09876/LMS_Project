@@ -148,68 +148,6 @@ const signin = async (req, res) => {
 };
 
 
-// const signin = async (req, res) => {
-//     const { userName, password } = req.body
-//     if (!userName || !password) {
-//         return res.status(400).json({
-//             success: false,
-//             message: "Please Enter all fields"
-//         })
-//     }
-//     try {
-//         const userData = await User.findOne({ userName: userName })
-//         if (!userData) {
-//             return res.status(400).json({
-//                 success: false,
-//                 message: "Invalid Username"
-//             })
-//         }
-//         const checkDatabasePassowrd = userData.password
-//         const isMatched = await bcrypt.compare(password, checkDatabasePassowrd)
-//         if (!isMatched) {
-//             return res.status(400).json({
-//                 success: false,
-//                 message: "Invalid Password"
-//             })
-//         }
-//         const payload = {
-//             id: userData._id,
-//             userName: userData.userName,
-//             email: userData.email,
-//             fullName: userData.fullName,
-//             phoneNumber: userData.phoneNumber,
-//             selectedCourse: userData.selectedCourse,
-//             image: userData.image
-//         };
-//         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "6hr" })
-//           // Check if user has selected a course
-//           if (!userData.selectedCourse || userData.selectedCourse.length === 0) {
-//             return res.status(200).json({
-//                 success: false,
-//                 token: token,
-//                 userData,
-//                 message: "Please select a course"
-//             });
-//         }
-//         const books = await getBooksByCourse(userData.selectedCourse);
-//         res.status(201).json({
-//             success: true,
-//             token: token,
-//             userData,
-//             books,
-//             message: "Login Successfully"
-//         })
-
-//     } catch (error) {
-//         console.log(error)
-//         return res.status(400).json({
-//             success: false,
-//             message: "Internal Server Error"
-//         })
-//     }
-
-// }
-
 const getBooksByCourse = async (selectedCourseIds) => {
     try {
         const books = await Book.find({ course: { $in: selectedCourseIds } });
@@ -223,16 +161,18 @@ const getBooksByCourse = async (selectedCourseIds) => {
 //User Profile 
 const userProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id)
+        const user = await User.findById(req.params.id).populate('selectedCourse')
         if (!user) {
             return res.status(400).json({
                 success: false,
                 message: "User Not Found"
             })
         }
+        const books = await Book.find({ course: { $in: user.selectedCourse } });
         return res.status(201).json({
             success: true,
-            user
+            user,
+            books,
         })
     } catch (error) {
         console.log(error)

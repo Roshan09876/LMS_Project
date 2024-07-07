@@ -46,6 +46,8 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
               Card(
                 color: Color(kButton.value),
                 elevation: 10,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)),
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(

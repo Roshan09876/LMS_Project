@@ -4,7 +4,7 @@ const cloudinary = require("cloudinary")
 const createCourse = async (req, res) => {
     const { name, description } = req.body;
     console.log(req.body)
-    const {image} = req.files;
+    const {image} = req.files && req.image;
 
     if(!name || !description){
         return res.status(400).json({
