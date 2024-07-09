@@ -128,7 +128,9 @@ const signin = async (req, res) => {
 
         // Extract course IDs and fetch books for selected courses
         const courseIds = userData.selectedCourse.map(course => course._id);
+        console.log('Selected Course IDs:', courseIds);
         const books = await getBooksByCourse(courseIds);
+        console.log('Books Fetched:', books);
 
         res.status(201).json({
             success: true,
@@ -150,12 +152,15 @@ const signin = async (req, res) => {
 
 const getBooksByCourse = async (selectedCourseIds) => {
     try {
-        // Find all books where the course ID matches any of the selectedCourseIds
-        const books = await Book.find({ course: { $in: selectedCourseIds } });
-        return books; // Return the array of books found
+        const books = await Book.find({ 
+            course: { $in: selectedCourseIds },
+            level: { $in: ["Beginner", "Easy"] } 
+         });
+        return books; 
+        console.log(books)
     } catch (error) {
         console.error(`Error fetching books: ${error}`);
-        return []; // Return an empty array if there's an error
+        return []; 
     }
 };
 
@@ -250,6 +255,8 @@ const selectCourse = async (req, res) => {
         return res.status(500).json({ success: false, message: error.message });
     }
 }
+
+
 
 module.exports = {
     signUp, signin, userProfile, updateProfile, selectCourse

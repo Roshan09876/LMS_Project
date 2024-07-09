@@ -93,6 +93,57 @@ const getBookbyLevel = async (req, res) => {
 };
 
 
+const getAllBook =async (req, res) => {
+    try {
+        const book = await Book.find()
+        res.status(200).json({ success: false, book, message: 'All Book Fetched Successfully' });
+    } catch (error) {
+        console.log(`Error fetching allbooks: ${error}`);
+        res.status(500).json({ success: false, message: error.message });
+    }
+
+}
+
+const searchbook = async (req, res) => {
+    try {
+        const { userId, courseId, query } = req.params; // Extract parameters from path
+
+        // Validate parameters
+        if (!userId || !courseId || !query) {
+            return res.status(400).json({ success: false, error: 'User ID, Course ID, and query are required' });
+        }
+
+        // Fetch user data
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ success: false, error: 'User not found' });
+        }
+
+        // Check if the course exists in the user's selected courses
+        const selectedCourse = user.selectedCourse.find(course => course._id.toString() === courseId);
+        if (!selectedCourse) {
+            return res.status(404).json({ success: false, error: 'Selected course not found for this user' });
+        }
+
+        // Build the search query
+        const searchQuery = {
+            course: courseId,
+            title: { $regex: query, $options: 'i' }, 
+        };
+
+        // Perform the search
+        const books = await Book.find(searchQuery);
+
+        // Respond with the results
+        res.json({ success: true, books });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, error: 'Server error' });
+    }
+};
+
+
+
 module.exports = {
-    createBook, getBookbyLevel
+    createBook, getBookbyLevel, getAllBook, searchbook
 };
