@@ -13,11 +13,11 @@ class ApiEndpoints {
   // For MAC
   // static const String baseUrl = "http://localhost:5500/api/";
 
-  //Pffice
-  // static const String baseUrl = "http://172.25.10.51:5500/api/";
+  //Office
+  static const String baseUrl = "http://172.25.10.51:5500/api/";
 
   //Flat
-  static const String baseUrl = "http://192.168.1.67:5500/api/";
+  // static const String baseUrl = "http://192.168.1.67:5500/api/";
 
   static const String register = "/signup";
   static const String login = "/signin";
@@ -26,4 +26,5 @@ class ApiEndpoints {
   static const String getAllCourse= "/getallcourse";
   static const String selectCourse= "/selectcourse";
   static const String getBeginnerBook= "/books/level/Beginner";
+  static const String searchBook= "/search";
 }

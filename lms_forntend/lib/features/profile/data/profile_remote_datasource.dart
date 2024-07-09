@@ -38,7 +38,7 @@ class ProfileRemoteDatasource {
       }
       final url = '${ApiEndpoints.getProfile}/$userID';
       Response response = await dio.get(
-        url,
+        url, 
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',

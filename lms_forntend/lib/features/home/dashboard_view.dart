@@ -165,7 +165,8 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                                 width: 100,
                                 child: InkWell(
                                   onTap: () {
-                                    Navigator.pushNamed(context, AppRoute.idCardViewRoute);
+                                    Navigator.pushNamed(
+                                        context, AppRoute.idCardViewRoute);
                                   },
                                   child: Card(
                                     elevation: 10,
@@ -173,7 +174,8 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                                         borderRadius: BorderRadius.circular(5)),
                                     color: Color(kButton.value),
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         CircleAvatar(
                                           backgroundColor: Colors.transparent,
@@ -316,35 +318,36 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                   top: 200,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Container(
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 10,
-                            offset: Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          fillColor: kButton,
-                          prefixIcon: Icon(Icons.search),
-                          suffixIcon: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.clear,
-                              color: kDark,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, AppRoute.searchpageViewRoute);
+                      },
+                      child: Container(
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 10,
+                              offset: Offset(0, 4),
                             ),
-                          ),
-                          hintText: 'Search...',
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(15.0)),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Row(
+                            children: [
+                              Icon(Icons.search),
+                              SizedBox(width: 20,),
+                              ReusableText(
+                                  text: 'Tap to Search....',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: kButton),
+                            ],
                           ),
                         ),
                       ),

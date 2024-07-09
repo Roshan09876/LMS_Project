@@ -68,4 +68,52 @@ class BookRemoteDatasource {
       return Left(Failure(error: e.toString()));
     }
   }
+
+    Future<Either<Failure, List<BookModel>>> searchBooks(String keyword) async {
+    try {
+      final token = await flutterSecureStorage.read(key: 'token');
+      if (token == null) {
+        return Left(Failure(error: 'An Unexpected token Error'));
+      }
+      final decodedToken = JwtDecoder.decode(token);
+      final userID = decodedToken['id'];
+      if (userID == null) {
+        return Left(Failure(error: 'An Unexpected Error Occurred'));
+      }
+      final selectedCourses = decodedToken['selectedCourse'] as List<dynamic>;
+      if (selectedCourses.isEmpty) {
+        return Left(Failure(error: 'No selected course found'));
+      }
+      final selectedCourseId = selectedCourses[0]['_id'];
+      final url = "${ApiEndpoints.searchBook}/$userID/$selectedCourseId/$keyword";
+
+      final response = await dio.get(
+        url,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        if (responseData['success'] == true && responseData.containsKey('books')) {
+          final List<BookModel> books = (responseData['books'] as List)
+              .map((book) => BookModel.fromJson(book))
+              .toList();
+          return Right(books);
+        } else {
+          return Left(Failure(error: 'Books data not found in response'));
+        }
+      } else {
+        return Left(Failure(error: 'Failed to load books. Status code: ${response.statusCode}'));
+      }
+    } on DioException catch (e) {
+        return Left(Failure(error: e.toString()));
+    } catch (e) {
+      return Left(Failure(error: 'Unexpected error: $e'));
+    }
+  }
+
 }

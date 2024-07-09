@@ -22,4 +22,23 @@ class BookViewModel extends StateNotifier<BookState> {
       state = state.copyWith(isLoading: false, books: success);
     });
   }
+
+  Future<void> getSearchBooks(String text) async {
+    if (text.isEmpty) {
+      state = state.copyWith(books: [], isLoading: false);
+      return;
+    }
+
+    state = state.copyWith(isLoading: true);
+    final result = await bookRemoteDatasource.searchBooks(text);
+    result.fold((failure) {
+      state = state.copyWith(isLoading: false, error: failure.error);
+    }, (success) {
+      state = state.copyWith(isLoading: false, books: success);
+    });
+  }
+
+  Future resetBookState() async {
+    state = BookState.initial();
+  }
 }

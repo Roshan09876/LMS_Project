@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_management_system/core/app_routes.dart';
 import 'package:learn_management_system/config/common/app_color.dart';
@@ -24,6 +27,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
   final _userNameController = TextEditingController();
   final _passwordController = TextEditingController();
   final LocalAuthentication localAuthentication = LocalAuthentication();
+  List<BiometricType> _availableBiometrics = [];
+  bool _isBiometricLoginEnabled = false;
+  bool _isBiometricAvailable = false;
 
   @override
   void initState() {
@@ -81,9 +87,50 @@ class _LoginViewState extends ConsumerState<LoginView> {
     });
   }
 
+  //For Face/fingerPrint
+  Future<void> _checkBiometricAvailability() async {
+    bool canCheckBiometrics = await localAuthentication.canCheckBiometrics;
+    List<BiometricType> availableBiometrics =
+        await localAuthentication.getAvailableBiometrics();
+    setState(() {
+      _isBiometricAvailable = canCheckBiometrics;
+      _availableBiometrics = availableBiometrics;
+    });
+  }
 
-  //For Face/fingerPrint 
-  
+  String _getBiometricButtonText() {
+    if (_availableBiometrics.contains(BiometricType.face)) {
+      return 'Login with Face ID';
+    } else if (_availableBiometrics.contains(BiometricType.fingerprint)) {
+      return 'Login with Fingerprint';
+    } else {
+      return 'Login with Biometric';
+    }
+  }
+
+  Future<void> getDataAfterLoginWithBiometric() async {
+    final secureStorage = ref.read(flutterSecureStorageProvider);
+    final username = await secureStorage.read(key: 'userName');
+    final password = await secureStorage.read(key: 'password');
+    if (username != null && password != null) {
+      await ref
+          .read(authViewModelProvider.notifier)
+          .login(username, password, context);
+      EasyLoading.showSuccess("Login Success");
+      Navigator.pushNamed(context, AppRoute.bottomViewRoute);
+    } else {
+      EasyLoading.showError("Failed to Login");
+    }
+  }
+
+  Future<void> _authenticateUser() async {
+    bool isAuthenticated = await localAuthentication.authenticate(
+      localizedReason: 'Authenticate to login',
+    );
+    if (isAuthenticated) {
+      await getDataAfterLoginWithBiometric();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -229,13 +276,26 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Login with Biometric'),
-                    Icon(Icons.fingerprint),
-                  ],
-                ),
+                // if (_isBiometricLoginEnabled &&
+                //     Platform.isAndroid &&
+                //     _isBiometricAvailable)
+                  InkWell(
+                    onTap: () async {
+                      if (Platform.isAndroid || Platform.isIOS) {
+                        await _authenticateUser();
+                      } else {
+                        EasyLoading.showError(
+                            "Biometric authentication is not supported on this platform.");
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(_getBiometricButtonText()),
+                        Icon(Icons.fingerprint),
+                      ],
+                    ),
+                  ),
                 const SizedBox(
                   height: 10,
                 ),
