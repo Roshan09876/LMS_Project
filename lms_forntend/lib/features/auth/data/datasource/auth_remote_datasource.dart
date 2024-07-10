@@ -45,12 +45,13 @@ class AuthRemoteDatasource {
         "userName": userName,
         "password": password,
       });
+      
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final token = response.data['token'];
         final userData = response.data['userData'];
 
-        // Map selectedCourse to CourseModel objects
+        // Map selectedCourse to CourseModel objects>r
         List<CourseModel> selectedCourses = [];
         if (userData.containsKey('selectedCourse') &&
             userData['selectedCourse'] is List) {

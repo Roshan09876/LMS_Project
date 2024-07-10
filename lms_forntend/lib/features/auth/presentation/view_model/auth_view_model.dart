@@ -72,7 +72,7 @@ class AuthViewModel extends StateNotifier<AuthState> {
       );
       EasyLoading.show(status: 'Loggin in',);
       Future.delayed(const Duration(seconds: 2), () {
-        Navigator.pushNamed(context, AppRoute.bottomViewRoute);
+        Navigator.pushReplacementNamed(context, AppRoute.bottomViewRoute);
         EasyLoading.dismiss();
       });
       // showSnackBar(

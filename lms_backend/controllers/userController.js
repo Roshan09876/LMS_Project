@@ -126,7 +126,6 @@ const signin = async (req, res) => {
             });
         }
 
-        // Extract course IDs and fetch books for selected courses
         const courseIds = userData.selectedCourse.map(course => course._id);
         console.log('Selected Course IDs:', courseIds);
         const books = await getBooksByCourse(courseIds);
@@ -149,7 +148,6 @@ const signin = async (req, res) => {
     }
 };
 
-
 const getBooksByCourse = async (selectedCourseIds) => {
     try {
         const books = await Book.find({ 
@@ -157,14 +155,13 @@ const getBooksByCourse = async (selectedCourseIds) => {
             level: { $in: ["Beginner", "Easy"] } 
          });
         return books; 
-        console.log(books)
     } catch (error) {
         console.error(`Error fetching books: ${error}`);
         return []; 
     }
 };
 
-
+  
 //User Profile 
 const userProfile = async (req, res) => {
     try {

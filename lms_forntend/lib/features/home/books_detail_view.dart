@@ -43,7 +43,6 @@ class _BooksDetailViewState extends ConsumerState<BooksDetailView> {
             child: SingleChildScrollView(
               child: Container(
                 decoration: BoxDecoration(
-                    border: Border.all(width: 3, color: kButton),
                     borderRadius: BorderRadius.circular(5)),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),

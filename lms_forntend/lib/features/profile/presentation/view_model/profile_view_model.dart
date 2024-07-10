@@ -46,6 +46,7 @@ class ProfileViewModel extends StateNotifier<ProfileState> {
       state = state.copyWith(isLoading: false, error: failure.error);
     }, (success) {
       state = state.copyWith(isLoading: false, showMessage: null);
+      resetState();
       showSnackBar(message: 'Updated Successfuly', context: context);
     });
   }

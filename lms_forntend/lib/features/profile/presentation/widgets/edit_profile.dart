@@ -24,7 +24,6 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
   final _passwordController = TextEditingController();
   final _imageController = TextEditingController();
 
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -97,7 +96,8 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
               const Text('UserName'),
               Row(
                 children: [
-                  const Icon(Icons.supervised_user_circle_rounded), // Prefix Icon
+                  const Icon(
+                      Icons.supervised_user_circle_rounded), // Prefix Icon
                   const VerticalDivider(
                     thickness: 1,
                     color: kDark,
@@ -116,7 +116,8 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
               const Text('Full Name'),
               Row(
                 children: [
-                  const Icon(Icons.supervised_user_circle_rounded), // Prefix Icon
+                  const Icon(
+                      Icons.supervised_user_circle_rounded), // Prefix Icon
                   const VerticalDivider(
                     thickness: 1,
                     color: kDark,
@@ -180,7 +181,9 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
                   OutlinedButton(
                       onPressed: () {
                         Navigator.pop(context);
-                        ref.read(profileViewModelProvider.notifier).resetState();
+                        ref
+                            .read(profileViewModelProvider.notifier)
+                            .resetState();
                       },
                       child: ReusableText(
                           text: 'Cancel',
@@ -197,7 +200,9 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
                           userName: _userNameController.text.trim(),
                           phoneNumber: _phoneNumberController.text.trim(),
                           email: _emailController.text.trim(),
-                          password: _passwordController.text.trim(),
+                          password: _passwordController.text.trim().isNotEmpty
+                              ? _passwordController.text.trim()
+                              : null,
                           image: _imageController.text.trim(),
                         );
                         ref

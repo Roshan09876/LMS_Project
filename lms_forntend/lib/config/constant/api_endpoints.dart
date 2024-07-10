@@ -19,6 +19,9 @@ class ApiEndpoints {
   //Flat
   // static const String baseUrl = "http://192.168.1.67:5500/api/";
 
+  //College wifi
+  // static const String baseUrl = "http://10.12.13.104:5500/api/";
+
   static const String register = "/signup";
   static const String login = "/signin";
   static const String getProfile = "/profile";

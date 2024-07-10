@@ -10,6 +10,7 @@ import 'package:learn_management_system/config/common/reusable_text.dart';
 import 'package:learn_management_system/core/app_routes.dart';
 import 'package:learn_management_system/core/provider/local_authentication_service_provider.dart';
 import 'package:learn_management_system/features/profile/presentation/view_model/profile_view_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsView extends ConsumerStatefulWidget {
   const SettingsView({
@@ -127,8 +128,8 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                                   : 'Biometric login disabled',
                               duration: Duration(seconds: 2),
                             );
-                            // SharedPreferences prefs = await SharedPreferences.getInstance();
-                            // await prefs.setBool('biometric_login', value);
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            await prefs.setBool('biometric_login', value);
                           } else {
                             EasyLoading.showError(
                               'Biometric authentication failed',

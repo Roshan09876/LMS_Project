@@ -111,40 +111,38 @@ class ProfileRemoteDatasource {
   }
 
   Future<Either<Failure, bool>> updateProfile(AuthEntity authEntity) async {
-    try {
-      final token = await flutterSecureStorage.read(key: 'token');
-      if (token == null) {
-        return Left(Failure(error: 'An Unexpected error occured'));
-      }
-      final decodedToken = JwtDecoder.decode(token);
-      final userId = decodedToken['id'];
-      if (userId == null) {
-        return Left(Failure(error: 'An Unexpected error occured'));
-      }
-      final url = '${ApiEndpoints.updateProfile}/$userId';
-      final response = await dio.put(
-        url,
-        queryParameters: {'id': userId},
-        data: authEntity.toJson(),
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-          },
-        ),
-      );
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final responseData = response.data;
-        print(responseData);
-
-        return const Right(true);
-      } else {
-        return Left(Failure(
-            error: response.statusMessage ?? 'Failed to Update Details',
-            statusCode: response.statusCode.toString()));
-      }
-    } on DioException catch (e) {
-      return Left(Failure(error: e.response!.data['message']));
+  try {
+    final token = await flutterSecureStorage.read(key: 'token');
+    if (token == null) {
+      return Left(Failure(error: 'An Unexpected error occurred'));
     }
+    final decodedToken = JwtDecoder.decode(token);
+    final userId = decodedToken['id'];
+    if (userId == null) {
+      return Left(Failure(error: 'An Unexpected error occurred'));
+    }
+    final url = '${ApiEndpoints.updateProfile}/$userId';
+    final response = await dio.put(
+      url,
+      data: authEntity.toJson(),
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return const Right(true);
+    } else {
+      return Left(Failure(
+        error: response.statusMessage ?? 'Failed to Update Details',
+        statusCode: response.statusCode.toString(),
+      ));
+    }
+  } on DioException catch (e) {
+    return Left(Failure(error: e.response!.data['message']));
   }
+}
+
 
 }

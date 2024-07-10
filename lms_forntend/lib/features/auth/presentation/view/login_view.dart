@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +8,7 @@ import 'package:learn_management_system/config/common/reusable_text.dart';
 import 'package:learn_management_system/core/provider/flutter_secure_storage_provider.dart';
 import 'package:learn_management_system/features/auth/presentation/view_model/auth_view_model.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -21,9 +21,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   final key = GlobalKey<FormState>();
   bool _obsecureText = true;
   bool? rememberMe = false;
-  final _gap = const SizedBox(
-    height: 15,
-  );
+  final _gap = const SizedBox(height: 15);
   final _userNameController = TextEditingController();
   final _passwordController = TextEditingController();
   final LocalAuthentication localAuthentication = LocalAuthentication();
@@ -35,9 +33,17 @@ class _LoginViewState extends ConsumerState<LoginView> {
   void initState() {
     super.initState();
     _loadSavedCredentials();
+    _checkBiometricAvailability();
+    _loadBiometricLoginState();
   }
 
-//For Remember me
+  Future<void> _loadBiometricLoginState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isBiometricLoginEnabled = prefs.getBool('biometric_login') ?? false;
+    });
+  }
+
   Future<void> _loadSavedCredentials() async {
     final flutterSecureStorage = ref.read(flutterSecureStorageProvider);
     String? savedUserName = await flutterSecureStorage.read(key: 'userName');
@@ -87,7 +93,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
     });
   }
 
-  //For Face/fingerPrint
   Future<void> _checkBiometricAvailability() async {
     bool canCheckBiometrics = await localAuthentication.canCheckBiometrics;
     List<BiometricType> availableBiometrics =
@@ -135,136 +140,129 @@ class _LoginViewState extends ConsumerState<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: SingleChildScrollView(
-          child: Form(
-            key: key,
-            child: Column(
-              children: [
-                const ReusableText(
-                  text: 'Login',
-                  color: kDark,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-                _gap,
-                _gap,
-                _gap,
-                Padding(
-                  padding: const EdgeInsets.only(left: 180),
-                  child: Container(
-                    height: 200,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/images/login_icon.png'))),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: SingleChildScrollView(
+            child: Form(
+              key: key,
+              child: Column(
+                children: [
+                  const ReusableText(
+                    text: 'Login',
+                    color: kDark,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
                   ),
-                ),
-                _gap,
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Username'),
-                      Row(
-                        children: [
-                          const Icon(Icons.verified_outlined), // Prefix Icon
-                          const VerticalDivider(
-                            thickness: 1,
-                            color: kDark,
-                          ), // Vertical Divider
-                          Expanded(
-                            child: TextFormField(
-                              controller: _userNameController,
-                              decoration: const InputDecoration(
-                                hintText: 'UserName must be unique',
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'please enter UserName';
-                                } else {
-                                  return null;
-                                }
-                              },
-                            ),
-                          ),
-                        ],
+                  _gap,
+                  _gap,
+                  _gap,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 180),
+                    child: Container(
+                      height: 200,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/login_icon.png'),
+                        ),
                       ),
-                      _gap,
-                      const Text('Password'),
-                      Row(
-                        children: [
-                          const Icon(Icons.password_outlined), // Prefix Icon
-                          const VerticalDivider(
-                            thickness: 1,
-                            color: kDark,
-                          ), // Vertical Divider
-                          Expanded(
-                            child: TextFormField(
-                              controller: _passwordController,
-                              obscureText: _obsecureText,
-                              decoration: InputDecoration(
+                    ),
+                  ),
+                  _gap,
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Username'),
+                        Row(
+                          children: [
+                            const Icon(Icons.verified_outlined),
+                            const VerticalDivider(
+                              thickness: 1,
+                              color: kDark,
+                            ),
+                            Expanded(
+                              child: TextFormField(
+                                controller: _userNameController,
+                                decoration: const InputDecoration(
+                                  hintText: 'UserName must be unique',
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'please enter UserName';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        _gap,
+                        const Text('Password'),
+                        Row(
+                          children: [
+                            const Icon(Icons.password_outlined),
+                            const VerticalDivider(
+                              thickness: 1,
+                              color: kDark,
+                            ),
+                            Expanded(
+                              child: TextFormField(
+                                controller: _passwordController,
+                                obscureText: _obsecureText,
+                                decoration: InputDecoration(
                                   hintText: 'Please Enter your password',
                                   suffixIcon: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _obsecureText = !_obsecureText;
-                                        });
-                                      },
-                                      child: Icon(_obsecureText
-                                          ? Icons.visibility
-                                          : Icons.visibility_off))),
-                              // validator: (value) {
-                              //   final numericRegExp =
-                              //       RegExp(r'^(?=.*?[0-9]).{8,}$');
-                              //   if (value!.isEmpty) {
-                              //     return 'please Enter Password';
-                              //   } else if (value.length < 6) {
-                              //     return 'Password must contain 6 letters';
-                              //   } else if (!numericRegExp.hasMatch(value)) {
-                              //     return 'Password must contain at least one numeric value';
-                              //   } else {
-                              //     return null;
-                              //   }
-                              // },
+                                    onTap: () {
+                                      setState(() {
+                                        _obsecureText = !_obsecureText;
+                                      });
+                                    },
+                                    child: Icon(_obsecureText
+                                        ? Icons.visibility
+                                        : Icons.visibility_off),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Checkbox(
                               value: rememberMe ?? false,
                               onChanged: (value) {
                                 _onRemembermeTapped(value!);
-                              }),
-                          ReusableText(
+                              },
+                            ),
+                            ReusableText(
                               text: 'Remember me',
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
-                              color: kButton),
-                        ],
-                      )
-                    ],
+                              color: kButton,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                // _gap,
-                ElevatedButton(
+                  ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(330, 50),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        backgroundColor: kButton),
+                      minimumSize: const Size(330, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      backgroundColor: kButton,
+                    ),
                     onPressed: () {
                       if (key.currentState!.validate()) {
                         ref.read(authViewModelProvider.notifier).login(
-                            _userNameController.text.trim(),
-                            _passwordController.text.trim(),
-                            context);
+                          _userNameController.text.trim(),
+                          _passwordController.text.trim(),
+                          context,
+                        );
                       }
                     },
                     child: const ReusableText(
@@ -272,61 +270,57 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       color: kLight,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                    )),
-                const SizedBox(
-                  height: 10,
-                ),
-                // if (_isBiometricLoginEnabled &&
-                //     Platform.isAndroid &&
-                //     _isBiometricAvailable)
-                  InkWell(
-                    onTap: () async {
-                      if (Platform.isAndroid || Platform.isIOS) {
-                        await _authenticateUser();
-                      } else {
-                        EasyLoading.showError(
-                            "Biometric authentication is not supported on this platform.");
-                      }
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(_getBiometricButtonText()),
-                        Icon(Icons.fingerprint),
-                      ],
                     ),
                   ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const ReusableText(
-                      text: "Don't have an account?",
-                      color: kDark,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  const SizedBox(height: 10),
+                  // if (_isBiometricLoginEnabled &&
+                  //     Platform.isAndroid &&
+                  //     _isBiometricAvailable)
                     InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, AppRoute.registerViewRoute);
+                      onTap: () async {
+                        if (Platform.isAndroid || Platform.isIOS) {
+                          await _authenticateUser();
+                        } else {
+                          EasyLoading.showError(
+                            "Biometric authentication is not supported on this platform.",
+                          );
+                        }
                       },
-                      child: const ReusableText(
-                        text: 'SignUp',
-                        color: kButton,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(_getBiometricButtonText()),
+                          const Icon(Icons.fingerprint),
+                        ],
                       ),
-                    )
-                  ],
-                ),
-              ],
+                    ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Don't have an account?"),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoute.registerViewRoute,
+                          );
+                        },
+                        child: const ReusableText(
+                          text: 'Register',
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: kButton,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
-    ));
+    );
   }
 }
