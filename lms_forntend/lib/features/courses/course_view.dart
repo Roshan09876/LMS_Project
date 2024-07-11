@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_management_system/config/common/app_color.dart';
 import 'package:learn_management_system/config/common/reusable_text.dart';
+import 'package:learn_management_system/features/book/model/book_model.dart';
 import 'package:learn_management_system/features/book/presentation/view_model/book_view_model.dart';
 
 class CourseView extends ConsumerStatefulWidget {
-  const CourseView({super.key});
+  const CourseView({Key? key}) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CourseViewState();
@@ -15,8 +16,10 @@ class _CourseViewState extends ConsumerState<CourseView> {
   final _heightgap = SizedBox(
     height: 15,
   );
+
   @override
   Widget build(BuildContext context) {
+    final easyState = ref.watch(bookViewModelProvider);
     return Scaffold(
       appBar: AppBar(
         title: ReusableText(
@@ -158,6 +161,25 @@ class _CourseViewState extends ConsumerState<CourseView> {
                   fontWeight: FontWeight.bold,
                   color: Color(kButton.value)),
             ),
+            Expanded(
+              child: easyState.isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : easyState.error != null
+                      ? Center(
+                          child: Text('Error: ${easyState.error}'),
+                        )
+                      : ListView.builder(
+                          itemCount: easyState.books.length,
+                          itemBuilder: (context, index) {
+                            BookModel book = easyState.books[index];
+                            return ListTile(
+                              title: Text(
+                                book.title ?? '',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }),
+            )
           ],
         ),
       ),
