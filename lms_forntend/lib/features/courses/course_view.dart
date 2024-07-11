@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_management_system/config/common/app_color.dart';
 import 'package:learn_management_system/config/common/reusable_text.dart';
+import 'package:learn_management_system/features/book/presentation/view_model/book_view_model.dart';
 
 class CourseView extends ConsumerStatefulWidget {
   const CourseView({super.key});
@@ -42,27 +43,33 @@ class _CourseViewState extends ConsumerState<CourseView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  height: 100,
-                  width: 100,
-                  child: Card(
-                    elevation: 7,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    color: Color(kButton.value),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: AssetImage('assets/icons/easy.png'),
-                        ),
-                        ReusableText(
-                            text: 'Easy',
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Color(kLight.value)),
-                      ],
+                InkWell(
+                  onTap: () {
+                    ref.read(bookViewModelProvider.notifier).getEasyBook();
+                  },
+                  child: Container(
+                    height: 100,
+                    width: 100,
+                    child: Card(
+                      elevation: 7,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)),
+                      color: Color(kButton.value),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            backgroundImage:
+                                AssetImage('assets/icons/easy.png'),
+                          ),
+                          ReusableText(
+                              text: 'Easy',
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Color(kLight.value)),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -143,7 +150,7 @@ class _CourseViewState extends ConsumerState<CourseView> {
               ],
             ),
             _heightgap,
-             Align(
+            Align(
               alignment: Alignment.topLeft,
               child: ReusableText(
                   text: 'Tutorial Video to learn',

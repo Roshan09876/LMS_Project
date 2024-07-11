@@ -21,6 +21,7 @@ class BookRemoteDatasource {
 
   BookRemoteDatasource({required this.flutterSecureStorage, required this.dio});
 
+//Book For Beginner level
   Future<Either<Failure, List<BookModel>>> getBeginnerLevelBooks() async {
     try {
       // final url = ApiEndpoints.getBeginnerBook;
@@ -34,6 +35,55 @@ class BookRemoteDatasource {
         return Left(Failure(error: 'An Unexpected Error Occurred'));
       }
       final url = "${ApiEndpoints.getBeginnerBook}/$userID";
+      Response response = await dio.get(
+        url,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseData = response.data;
+        if (responseData is Map<String, dynamic> &&
+            responseData['success'] == true &&
+            responseData.containsKey('books')) {
+          List<BookModel> books = (responseData['books'] as List)
+              .map((book) => BookModel(
+                    title: book['title'],
+                    subtitle: book['subtitle'] ?? '',
+                    description: book['description'] ?? '',
+                    image: book['image'] ?? '',
+                    course: book['course'] ?? '',
+                    level: book['level'] ?? '',
+                  ))
+              .toList();
+          return Right(books);
+        } else {
+          return Left(Failure(error: 'Books data not found in response'));
+        }
+      } else {
+        return Left(Failure(error: response.data['message']));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(error: e.toString()));
+    }
+  }
+
+  //Easy Level
+    Future<Either<Failure, List<BookModel>>> getEasyLevelBooks() async {
+    try {
+      // final url = ApiEndpoints.getBeginnerBook;
+      final token = await flutterSecureStorage.read(key: 'token');
+      if (token == null) {
+        return Left(Failure(error: 'An Unexpected token Error'));
+      }
+      final decodedToken = JwtDecoder.decode(token);
+      final userID = decodedToken['id'];
+      if (userID == null) {
+        return Left(Failure(error: 'An Unexpected Error Occurred'));
+      }
+      final url = "${ApiEndpoints.getEasyBook}/$userID";
       Response response = await dio.get(
         url,
         options: Options(

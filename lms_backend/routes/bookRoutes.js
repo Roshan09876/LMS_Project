@@ -7,6 +7,7 @@ const upload = require('../middleware/upload');
 router.post('/createbook', BookController.createBook);
 router.get('/getallbook', BookController.getAllBook);
 router.get('/books/level/:level/:id', BookController.getBookbyLevel);
+router.get('/books/level/:level', BookController.getBooksByLevel);
 router.get('/search/:userId/:courseId/:query', BookController.searchbook);
 
 

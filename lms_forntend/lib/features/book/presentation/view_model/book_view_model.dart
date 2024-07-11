@@ -13,6 +13,7 @@ class BookViewModel extends StateNotifier<BookState> {
   BookViewModel({required this.bookRemoteDatasource})
       : super(BookState.initial());
 
+//Beginner Level
   Future<void> getBeginnerBook() async {
     state = state.copyWith(isLoading: true);
     final result = await bookRemoteDatasource.getBeginnerLevelBooks();
@@ -22,6 +23,18 @@ class BookViewModel extends StateNotifier<BookState> {
       state = state.copyWith(isLoading: false, books: success);
     });
   }
+
+  //Easy Level
+  Future<void> getEasyBook() async {
+    state = state.copyWith(isLoading: true);
+    final result = await bookRemoteDatasource.getEasyLevelBooks();
+    result.fold((failure) {
+      state = state.copyWith(isLoading: false, error: failure.error);
+    }, (success) {
+      state = state.copyWith(isLoading: false, books: success);
+    });
+  }
+  
 
   Future<void> getSearchBooks(String text) async {
     if (text.isEmpty) {

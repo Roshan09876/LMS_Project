@@ -92,6 +92,29 @@ const getBookbyLevel = async (req, res) => {
     }
 };
 
+const getBooksByLevel = async (req, res) => {
+    const { level } = req.params; 
+
+    const validLevels = ["Beginner", "Easy", "Medium", "Hard", "Advance"];
+    if (!validLevels.includes(level)) {
+        return res.status(400).json({ success: false, message: "Invalid Level" });
+    }
+
+    try {
+        // Fetch books according to the level
+        const books = await Book.find({ level });
+
+        if (books.length === 0) {
+            return res.status(404).json({ success: false, message: `No books found for level '${level}'` });
+        }
+
+        res.status(200).json({ success: true, books });
+    } catch (error) {
+        console.log(`Error fetching books by level: ${error}`);
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 
 const getAllBook =async (req, res) => {
     try {
@@ -145,5 +168,5 @@ const searchbook = async (req, res) => {
 
 
 module.exports = {
-    createBook, getBookbyLevel, getAllBook, searchbook
+    createBook, getBookbyLevel, getAllBook, searchbook, getBooksByLevel
 };
