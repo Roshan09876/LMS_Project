@@ -31,5 +31,7 @@ class ApiEndpoints {
   static const String getBeginnerBook= "/books/level/Beginner";
   static const String getEasyBook= "/books/level/Easy";
   static const String getMediumBook= "/books/level/Medium";
+  static const String getHardBook= "/books/level/Hard";
+  static const String getAdvanceBook= "/books/level/Advance";
   static const String searchBook= "/search";
 }

@@ -6,7 +6,6 @@ import 'package:learn_management_system/config/common/reusable_text.dart';
 import 'package:learn_management_system/core/app_routes.dart';
 import 'package:learn_management_system/features/book/model/book_model.dart';
 import 'package:learn_management_system/features/book/presentation/view_model/book_view_model.dart';
-import 'package:learn_management_system/features/course/presentation/widget/selected_book.dart';
 
 class CourseView extends ConsumerStatefulWidget {
   const CourseView({Key? key}) : super(key: key);
@@ -109,52 +108,62 @@ class _CourseViewState extends ConsumerState<CourseView> {
                     ),
                   ),
                 ),
-                Container(
-                  height: 100,
-                  width: 100,
-                  child: Card(
-                    elevation: 7,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    color: Color(kButton.value),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: AssetImage('assets/icons/hard.png'),
-                        ),
-                        ReusableText(
-                            text: 'Hard',
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Color(kLight.value)),
-                      ],
+                InkWell(
+                   onTap: () {
+                    ref.read(bookViewModelProvider.notifier).getHardBook();
+                  },
+                  child: Container(
+                    height: 100,
+                    width: 100,
+                    child: Card(
+                      elevation: 7,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)),
+                      color: Color(kButton.value),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            backgroundImage: AssetImage('assets/icons/hard.png'),
+                          ),
+                          ReusableText(
+                              text: 'Hard',
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Color(kLight.value)),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-                Container(
-                  height: 100,
-                  width: 100,
-                  child: Card(
-                    elevation: 7,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    color: Color(kButton.value),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          backgroundImage:
-                              AssetImage('assets/icons/advance.png'),
-                        ),
-                        ReusableText(
-                            text: 'Advance',
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Color(kLight.value)),
-                      ],
+                InkWell(
+                  onTap: () {
+                    ref.read(bookViewModelProvider.notifier).getAdvanceBook();
+                  },
+                  child: Container(
+                    height: 100,
+                    width: 100,
+                    child: Card(
+                      elevation: 7,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)),
+                      color: Color(kButton.value),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            backgroundImage:
+                                AssetImage('assets/icons/advance.png'),
+                          ),
+                          ReusableText(
+                              text: 'Advance',
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Color(kLight.value)),
+                        ],
+                      ),
                     ),
                   ),
                 ),

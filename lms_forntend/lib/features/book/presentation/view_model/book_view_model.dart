@@ -46,6 +46,28 @@ class BookViewModel extends StateNotifier<BookState> {
       state = state.copyWith(isLoading: false, books: success);
     });
   }
+
+  //Hard Level
+  Future<void> getHardBook() async {
+    state = state.copyWith(isLoading: true);
+    final result = await bookRemoteDatasource.getHardLevelBooks();
+    result.fold((failure) {
+      state = state.copyWith(isLoading: false, error: failure.error);
+    }, (success) {
+      state = state.copyWith(isLoading: false, books: success);
+    });
+  }
+
+  //Hard Level
+  Future<void> getAdvanceBook() async {
+    state = state.copyWith(isLoading: true);
+    final result = await bookRemoteDatasource.getAdvanceLevelBooks();
+    result.fold((failure) {
+      state = state.copyWith(isLoading: false, error: failure.error);
+    }, (success) {
+      state = state.copyWith(isLoading: false, books: success);
+    });
+  }
   
 
   Future<void> getSearchBooks(String text) async {

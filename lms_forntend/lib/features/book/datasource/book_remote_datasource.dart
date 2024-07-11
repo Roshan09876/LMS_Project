@@ -167,6 +167,103 @@ class BookRemoteDatasource {
     }
   }
 
+  //Hard Level
+    Future<Either<Failure, List<BookModel>>> getHardLevelBooks() async {
+    try {
+      // final url = ApiEndpoints.getBeginnerBook;
+      final token = await flutterSecureStorage.read(key: 'token');
+      if (token == null) {
+        return Left(Failure(error: 'An Unexpected token Error'));
+      }
+      final decodedToken = JwtDecoder.decode(token);
+      final userID = decodedToken['id'];
+      if (userID == null) {
+        return Left(Failure(error: 'An Unexpected Error Occurred'));
+      }
+      final url = "${ApiEndpoints.getHardBook}/$userID";
+      Response response = await dio.get(
+        url,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseData = response.data;
+        if (responseData is Map<String, dynamic> &&
+            responseData['success'] == true &&
+            responseData.containsKey('books')) {
+          List<BookModel> books = (responseData['books'] as List)
+              .map((book) => BookModel(
+                    title: book['title'],
+                    subtitle: book['subtitle'] ?? '',
+                    description: book['description'] ?? '',
+                    image: book['image'] ?? '',
+                    course: book['course'] ?? '',
+                    level: book['level'] ?? '',
+                  ))
+              .toList();
+          return Right(books);
+        } else {
+          return Left(Failure(error: 'Books data not found in response'));
+        }
+      } else {
+        return Left(Failure(error: response.data['message']));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(error: e.toString()));
+    }
+  }
+  //Advance Level
+    Future<Either<Failure, List<BookModel>>> getAdvanceLevelBooks() async {
+    try {
+      // final url = ApiEndpoints.getBeginnerBook;
+      final token = await flutterSecureStorage.read(key: 'token');
+      if (token == null) {
+        return Left(Failure(error: 'An Unexpected token Error'));
+      }
+      final decodedToken = JwtDecoder.decode(token);
+      final userID = decodedToken['id'];
+      if (userID == null) {
+        return Left(Failure(error: 'An Unexpected Error Occurred'));
+      }
+      final url = "${ApiEndpoints.getAdvanceBook}/$userID";
+      Response response = await dio.get(
+        url,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseData = response.data;
+        if (responseData is Map<String, dynamic> &&
+            responseData['success'] == true &&
+            responseData.containsKey('books')) {
+          List<BookModel> books = (responseData['books'] as List)
+              .map((book) => BookModel(
+                    title: book['title'],
+                    subtitle: book['subtitle'] ?? '',
+                    description: book['description'] ?? '',
+                    image: book['image'] ?? '',
+                    course: book['course'] ?? '',
+                    level: book['level'] ?? '',
+                  ))
+              .toList();
+          return Right(books);
+        } else {
+          return Left(Failure(error: 'Books data not found in response'));
+        }
+      } else {
+        return Left(Failure(error: response.data['message']));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(error: e.toString()));
+    }
+  }
+
     Future<Either<Failure, List<BookModel>>> searchBooks(String keyword) async {
     try {
       final token = await flutterSecureStorage.read(key: 'token');
