@@ -1,3 +1,4 @@
+import 'package:accordion/accordion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_management_system/config/common/app_color.dart';
@@ -161,25 +162,47 @@ class _CourseViewState extends ConsumerState<CourseView> {
                   fontWeight: FontWeight.bold,
                   color: Color(kButton.value)),
             ),
-            Expanded(
-              child: easyState.isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : easyState.error != null
-                      ? Center(
-                          child: Text('Error: ${easyState.error}'),
-                        )
-                      : ListView.builder(
-                          itemCount: easyState.books.length,
-                          itemBuilder: (context, index) {
-                            BookModel book = easyState.books[index];
-                            return ListTile(
-                              title: Text(
-                                book.title ?? '',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            );
-                          }),
-            )
+            Accordion(
+              headerBackgroundColor: kButton,
+              contentBorderColor: Colors.white,
+              headerPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+              children: [
+                AccordionSection(
+                  header: Row(
+                    children: [
+                      Icon(
+                        Icons.book,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 10),
+                      ReusableText(
+                        text: 'Books of level, ${easyState.books.first.level}',
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: kLight,
+                      ),
+                    ],
+                  ),
+                  content: Container(
+                    // Adjust content area height and constraints as needed
+                    height:
+                        200, // Example height, adjust according to your UI needs
+                    child: ListView.builder(
+                      itemCount: easyState.books.length,
+                      itemBuilder: (context, index) {
+                        BookModel book = easyState.books[index];
+                        return ListTile(
+                          title: Text(
+                            book.title ?? '',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
