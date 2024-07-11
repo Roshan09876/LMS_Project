@@ -76,6 +76,7 @@ class ProfileRemoteDatasource {
               responseData['books'] is List) {
             books = (responseData['books'] as List)
                 .map((book) => BookModel(
+                  id: book['id'],
                       title: book['title'],
                       subtitle: book['subtitle'] ?? '',
                       description: book['description'] ?? '',

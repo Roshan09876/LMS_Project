@@ -39,14 +39,15 @@ class AuthViewModel extends StateNotifier<AuthState> {
       );
       EasyLoading.show(status: 'Please Wait...', maskType: EasyLoadingMaskType.black);
        Future.delayed(const Duration(seconds: 2), () {
+      EasyLoading.showSuccess( 'Register Successfully');
         Navigator.pushNamed(context, AppRoute.loginViewRoute);
         EasyLoading.dismiss();
       });
-      showSnackBar(
-          message: 'User Created Successfully',
-          context: context,
-          color: Colors.green);
-      Navigator.pushNamed(context, AppRoute.loginViewRoute);
+      // showSnackBar(
+      //     message: 'User Created Successfully',
+      //     context: context,
+      //     color: Colors.green);
+      // Navigator.pushNamed(context, AppRoute.loginViewRoute);
     });
   }
 
@@ -70,13 +71,13 @@ class AuthViewModel extends StateNotifier<AuthState> {
         showMessage: true,
         currentUser: success
       );
-      EasyLoading.show(status: 'Loggin in',);
+            EasyLoading.show(status: 'Please Wait...', maskType: EasyLoadingMaskType.black);
+
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.pushReplacementNamed(context, AppRoute.bottomViewRoute);
+      EasyLoading.showSuccess('Loggedin in',);
         EasyLoading.dismiss();
       });
-      // showSnackBar(
-      //     message: 'Login Successfully', context: context, color: Colors.green);
     });
   }
 }

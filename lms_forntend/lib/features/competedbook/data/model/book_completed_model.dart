@@ -1,11 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'package:json_annotation/json_annotation.dart';
 
-part 'book_model.g.dart';
+part 'book_completed_model.g.dart';
 
 @JsonSerializable()
-class BookModel {
+class BookCompletedModel {
   @JsonKey()
   final String? id;
   final String? title;
@@ -14,17 +12,19 @@ class BookModel {
   final String? image;
   final String? course;
   final String? level;
-  BookModel({
+
+  BookCompletedModel(
     this.id,
     this.title,
     this.subtitle,
     this.description,
     this.image,
-     this.course,
-    this.level
-  });
+    this.course,
+    this.level,
+  );
 
-  factory BookModel.fromJson(Map<String, dynamic> json) => _$BookModelFromJson(json);
+  factory BookCompletedModel.fromJson(Map<String, dynamic> json) =>
+      _$BookCompletedModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$BookModelToJson(this);
+  Map<String, dynamic> toJson() => _$BookCompletedModelToJson(this);
 }

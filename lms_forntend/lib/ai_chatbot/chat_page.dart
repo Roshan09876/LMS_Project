@@ -105,6 +105,7 @@ class _ChatPageState extends State<ChatPage> {
                                           textEditingController.text));
                                 },
                                 controller: textEditingController,
+                                // enabled: false,
                                 decoration: InputDecoration(
                                   fillColor: kButton,
                                   // filled: true,

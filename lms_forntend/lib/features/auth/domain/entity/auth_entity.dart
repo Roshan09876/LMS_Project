@@ -2,6 +2,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:learn_management_system/features/book/model/book_model.dart';
+import 'package:learn_management_system/features/competedbook/data/model/book_completed_model.dart';
 import 'package:learn_management_system/features/course/model/course_model.dart';
 
 class AuthEntity extends Equatable {
@@ -13,22 +14,23 @@ class AuthEntity extends Equatable {
   final String? phoneNumber;
   final String? password;
   final bool? isAdmin;
-  final List<CourseModel>? selectedCourse; 
+  final List<CourseModel>? selectedCourse;
   final String? image;
-  final List<BookModel>? books; 
+  final List<BookModel>? books;
+  final List<BookCompletedModel>? bookCompleted;
 
-  AuthEntity({
-    this.id,
-    this.fullName,
-    this.email,
-    this.userName,
-    this.phoneNumber,
-    this.password,
-    this.isAdmin,
-    this.selectedCourse,
-    this.image,
-    this.books
-  });
+  AuthEntity(
+      {this.id,
+      this.fullName,
+      this.email,
+      this.userName,
+      this.phoneNumber,
+      this.password,
+      this.isAdmin,
+      this.selectedCourse,
+      this.image,
+      this.books,
+      this.bookCompleted});
 
   @override
   List<Object?> get props => [
@@ -41,6 +43,7 @@ class AuthEntity extends Equatable {
         isAdmin,
         selectedCourse,
         image,
+        bookCompleted
       ];
 
   factory AuthEntity.fromJson(Map<String, dynamic> json) {
@@ -57,6 +60,12 @@ class AuthEntity extends Equatable {
               .map((courseJson) => CourseModel.fromJson(courseJson))
               .toList()
           : null,
+      bookCompleted: json['bookCompleted'] != null
+          ? (json['bookCompleted'] as List<dynamic>)
+              .map((bookCompletedJson) =>
+                  BookCompletedModel.fromJson(bookCompletedJson))
+              .toList()
+          : null,
       image: json['image'],
     );
   }
@@ -70,7 +79,10 @@ class AuthEntity extends Equatable {
       'phoneNumber': phoneNumber,
       'password': password,
       'isAdmin': isAdmin,
-      'selectedCourse': selectedCourse?.map((course) => course.toJson()).toList(),
+      'selectedCourse':
+          selectedCourse?.map((course) => course.toJson()).toList(),
+      'bookCompleted':
+          bookCompleted?.map((bookCompleted) => bookCompleted.toJson()).toList(),
       'image': image,
     };
   }
@@ -84,6 +96,7 @@ class AuthEntity extends Equatable {
     String? password,
     bool? isAdmin,
     List<CourseModel>? selectedCourse, // Changed to CourseModel
+    List<BookCompletedModel>? bookCompleted, // Changed to CourseModel
     String? image,
   }) {
     return AuthEntity(
@@ -95,6 +108,7 @@ class AuthEntity extends Equatable {
       password: password ?? this.password,
       isAdmin: isAdmin ?? this.isAdmin,
       selectedCourse: selectedCourse ?? this.selectedCourse,
+      bookCompleted: bookCompleted ?? this.bookCompleted,
       image: image ?? this.image,
     );
   }

@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:learn_management_system/features/auth/domain/entity/auth_entity.dart';
 import 'package:learn_management_system/features/book/model/book_model.dart';
+import 'package:learn_management_system/features/competedbook/data/model/book_completed_model.dart';
 import 'package:learn_management_system/features/course/model/course_model.dart';
 
 part 'auth_api_model.g.dart';
@@ -15,6 +16,7 @@ class AuthApiModel {
   final List<CourseModel>? selectedCourse;
   final String? image;
   final List<BookModel>? books;
+  final List<BookCompletedModel>? bookCompleted;
 
   AuthApiModel({
     this.fullName,
@@ -24,7 +26,8 @@ class AuthApiModel {
     this.password,
     this.selectedCourse,
     this.image,
-    this.books
+    this.books,
+    this.bookCompleted,
   });
 
   // Convert from AuthEntity to AuthApiModel
@@ -37,7 +40,8 @@ class AuthApiModel {
       password: authEntity.password,
       selectedCourse: authEntity.selectedCourse,
       image: authEntity.image,
-      books: authEntity.books
+      books: authEntity.books,
+      bookCompleted: authEntity.bookCompleted,
     );
   }
 
@@ -45,7 +49,6 @@ class AuthApiModel {
   factory AuthApiModel.fromJson(Map<String, dynamic> json) =>
       _$AuthApiModelFromJson(json);
 
-  // JSON serialization
   Map<String, dynamic> toJson() => _$AuthApiModelToJson(this);
 
   // Convert to AuthEntity
@@ -58,7 +61,8 @@ class AuthApiModel {
       password: password,
       selectedCourse: selectedCourse,
       image: image,
-      books: books
+      books: books,
+      bookCompleted: bookCompleted,
     );
   }
 }

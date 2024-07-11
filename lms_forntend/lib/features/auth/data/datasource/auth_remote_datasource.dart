@@ -8,6 +8,7 @@ import 'package:learn_management_system/core/network/httpservice.dart';
 import 'package:learn_management_system/core/provider/flutter_secure_storage_provider.dart';
 import 'package:learn_management_system/features/auth/domain/entity/auth_entity.dart';
 import 'package:learn_management_system/features/book/model/book_model.dart';
+import 'package:learn_management_system/features/competedbook/data/model/book_completed_model.dart';
 import 'package:learn_management_system/features/course/model/course_model.dart';
 
 final authRemoteDataSourceProvider = Provider<AuthRemoteDatasource>((ref) =>
@@ -37,21 +38,20 @@ class AuthRemoteDatasource {
     }
   }
 
-
-  Future<Either<Failure, AuthEntity>> login(String userName, String password) async {
+  Future<Either<Failure, AuthEntity>> login(
+      String userName, String password) async {
     try {
       final url = ApiEndpoints.login;
       Response response = await dio.post(url, data: {
         "userName": userName,
         "password": password,
       });
-      
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final token = response.data['token'];
         final userData = response.data['userData'];
 
-        // Map selectedCourse to CourseModel objects>r
+        // Map selectedCourse to CourseModel objects
         List<CourseModel> selectedCourses = [];
         if (userData.containsKey('selectedCourse') &&
             userData['selectedCourse'] is List) {
@@ -71,12 +71,29 @@ class AuthRemoteDatasource {
             response.data['books'] is List) {
           books = (response.data['books'] as List)
               .map((book) => BookModel(
-                    title: book['title'],
-                    subtitle: book['subtitle'] ?? "",
-                    description: book['description'] ?? "",
-                    image: book['image'] ?? "",
-                    course: book['course'] ?? "",
-                    level: book['level'] ?? ""
+                  id: book['_id'],
+                  title: book['title'],
+                  subtitle: book['subtitle'] ?? "",
+                  description: book['description'] ?? "",
+                  image: book['image'] ?? "",
+                  course: book['course'] ?? "",
+                  level: book['level'] ?? ""))
+              .toList();
+        }
+
+        // Map bookCompleted to BookCompletedModel objects
+        List<BookCompletedModel> bookCompletedModel = [];
+        if (userData.containsKey('bookCompleted') &&
+            userData['bookCompleted'] is List) {
+          bookCompletedModel = (userData['bookCompleted'] as List)
+              .map((bookCompleted) => BookCompletedModel(
+                    bookCompleted['_id'],
+                    bookCompleted['title'],
+                    bookCompleted['subtitle'],
+                    bookCompleted['description'],
+                    bookCompleted['image'],
+                    bookCompleted['course'],
+                    bookCompleted['level'],
                   ))
               .toList();
         }
@@ -90,6 +107,8 @@ class AuthRemoteDatasource {
           selectedCourse: selectedCourses,
           image: userData['image'],
           books: books, // Assign the mapped books list
+          bookCompleted:
+              bookCompletedModel, // Assign the mapped bookCompletedModel list
         );
 
         await flutterSecureStorage.write(key: "token", value: token);
@@ -109,5 +128,4 @@ class AuthRemoteDatasource {
       return Left(Failure(error: e.toString()));
     }
   }
-
 }

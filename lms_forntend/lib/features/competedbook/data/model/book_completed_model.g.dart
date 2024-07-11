@@ -1,22 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'book_model.dart';
+part of 'book_completed_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-BookModel _$BookModelFromJson(Map<String, dynamic> json) => BookModel(
-      id: json['id'] as String?,
-      title: json['title'] as String?,
-      subtitle: json['subtitle'] as String?,
-      description: json['description'] as String?,
-      image: json['image'] as String?,
-      course: json['course'] as String?,
-      level: json['level'] as String?,
+BookCompletedModel _$BookCompletedModelFromJson(Map<String, dynamic> json) =>
+    BookCompletedModel(
+      json['id'] as String?,
+      json['title'] as String?,
+      json['subtitle'] as String?,
+      json['description'] as String?,
+      json['image'] as String?,
+      json['course'] as String?,
+      json['level'] as String?,
     );
 
-Map<String, dynamic> _$BookModelToJson(BookModel instance) => <String, dynamic>{
+Map<String, dynamic> _$BookCompletedModelToJson(BookCompletedModel instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
       'subtitle': instance.subtitle,

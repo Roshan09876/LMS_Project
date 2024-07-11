@@ -19,6 +19,9 @@ AuthApiModel _$AuthApiModelFromJson(Map<String, dynamic> json) => AuthApiModel(
       books: (json['books'] as List<dynamic>?)
           ?.map((e) => BookModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      bookCompleted: (json['bookCompleted'] as List<dynamic>?)
+          ?.map((e) => BookCompletedModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$AuthApiModelToJson(AuthApiModel instance) =>
@@ -31,4 +34,5 @@ Map<String, dynamic> _$AuthApiModelToJson(AuthApiModel instance) =>
       'selectedCourse': instance.selectedCourse,
       'image': instance.image,
       'books': instance.books,
+      'bookCompleted': instance.bookCompleted,
     };
