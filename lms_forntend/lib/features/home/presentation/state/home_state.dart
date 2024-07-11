@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learn_management_system/features/courses/course_view.dart';
+import 'package:learn_management_system/features/course/presentation/view/course_view.dart';
 import 'package:learn_management_system/features/home/dashboard_view.dart';
 import 'package:learn_management_system/features/home/settings_view.dart';
 import 'package:learn_management_system/features/profile/presentation/view/profile_view.dart';

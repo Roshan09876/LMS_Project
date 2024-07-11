@@ -30,5 +30,6 @@ class ApiEndpoints {
   static const String selectCourse= "/selectcourse";
   static const String getBeginnerBook= "/books/level/Beginner";
   static const String getEasyBook= "/books/level/Easy";
+  static const String getMediumBook= "/books/level/Medium";
   static const String searchBook= "/search";
 }

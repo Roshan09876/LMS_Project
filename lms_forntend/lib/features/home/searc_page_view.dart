@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_management_system/config/common/app_color.dart';
 import 'package:learn_management_system/config/common/reusable_text.dart';
+import 'package:learn_management_system/core/app_routes.dart';
 import 'package:learn_management_system/features/book/presentation/view_model/book_view_model.dart';
-import 'package:learn_management_system/features/home/widgets_page/search_show_scree.dart';
-import 'package:learn_management_system/features/profile/presentation/view_model/profile_view_model.dart';
 
 class SearcPageView extends ConsumerStatefulWidget {
   const SearcPageView({Key? key}) : super(key: key);
@@ -19,17 +18,10 @@ class SearcPageView extends ConsumerStatefulWidget {
 class _SearcPageViewState extends ConsumerState<SearcPageView> {
   TextEditingController searchController = TextEditingController();
 
-  // @override
-  // void initState() {
-  //   WidgetsBinding.instance.addPostFrameCallback((_) async {
-  //     await ref.watch(profileViewModelProvider.notifier).resetState();
-  //   });
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(bookViewModelProvider);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -78,7 +70,7 @@ class _SearcPageViewState extends ConsumerState<SearcPageView> {
               ),
             ),
             Expanded(
-              child: state.isLoading!
+              child: state.isLoading
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
@@ -91,15 +83,13 @@ class _SearcPageViewState extends ConsumerState<SearcPageView> {
                           itemBuilder: (context, index) {
                             final book = state.books[index];
                             return ListTile(
-                             onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          SearchShowScree(bookModel: book,),
-                                    ),
-                                  );
-                                },
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoute.booksViewRoute,
+                                  arguments: book,
+                                );
+                              },
                               title: Padding(
                                 padding: const EdgeInsets.only(bottom: 10),
                                 child: Container(
@@ -113,16 +103,14 @@ class _SearcPageViewState extends ConsumerState<SearcPageView> {
                                   ),
                                 ),
                               ),
-                              // subtitle: Text(
-                              //   book.description!.length > 100
-                              //       ? '${book.description!.substring(0, 150)}...'
-                              //       : book.description,
-                              // ),
-                              trailing: ReusableText(
-                                text: book.title!,
-                                fontWeight: FontWeight.w200,
-                                fontSize: 18,
-                                color: Color(kButton.value),
+                              trailing: SizedBox(
+                                width: 150,
+                                child: ReusableText(
+                                  text: book.title!,
+                                  fontWeight: FontWeight.w200,
+                                  fontSize: 18,
+                                  color: Color(kButton.value),
+                                ),
                               ),
                             );
                           },
@@ -142,15 +130,6 @@ class _SearcPageViewState extends ConsumerState<SearcPageView> {
     } else if (imageUrl.isNotEmpty) {
       // Assuming this case handles local file paths.
       return FileImage(File(imageUrl));
-    } else {
-      // Use a default image for invalid URLs
-      return AssetImage('assets/images/logo.png');
-    }
-  }
-
-  ImageProvider _getProfileImageProvider(String imageUrl) {
-    if (imageUrl.startsWith('http')) {
-      return NetworkImage(imageUrl);
     } else {
       // Use a default image for invalid URLs
       return AssetImage('assets/images/logo.png');

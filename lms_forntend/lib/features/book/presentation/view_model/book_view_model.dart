@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_management_system/features/book/datasource/book_remote_datasource.dart';
 import 'package:learn_management_system/features/book/presentation/state/book_state.dart';
@@ -28,6 +29,17 @@ class BookViewModel extends StateNotifier<BookState> {
   Future<void> getEasyBook() async {
     state = state.copyWith(isLoading: true);
     final result = await bookRemoteDatasource.getEasyLevelBooks();
+    result.fold((failure) {
+      state = state.copyWith(isLoading: false, error: failure.error);
+    }, (success) {
+      state = state.copyWith(isLoading: false, books: success);
+    });
+  }
+
+  //Medium Level
+  Future<void> getMediumBook() async {
+    state = state.copyWith(isLoading: true);
+    final result = await bookRemoteDatasource.getMediumLevelBooks();
     result.fold((failure) {
       state = state.copyWith(isLoading: false, error: failure.error);
     }, (success) {
