@@ -4,6 +4,7 @@ import 'package:learn_management_system/core/test.dart';
 import 'package:learn_management_system/features/auth/presentation/view/getting_started.dart';
 import 'package:learn_management_system/features/auth/presentation/view/login_view.dart';
 import 'package:learn_management_system/features/auth/presentation/view/register_view.dart';
+import 'package:learn_management_system/features/competedbook/presentation/view/book_completed_view.dart';
 import 'package:learn_management_system/features/course/presentation/view/select_course.dart';
 import 'package:learn_management_system/features/home/dashboard_view.dart';
 import 'package:learn_management_system/features/home/presentation/view/bottom_view.dart';
@@ -28,6 +29,7 @@ class AppRoute {
   static String chatPageViewRoute = '/chatPageViewRoute';
   static String booksViewRoute = '/booksViewRoute';
   static String searchpageViewRoute = '/searchpageViewRoute';
+  static String bookCompletedViewRoute = '/bookCompletedViewRoute';
 
   static getApplicationRoute() {
     return {
@@ -44,6 +46,7 @@ class AppRoute {
       idCardViewRoute: (context) => const IdCard(),
       booksViewRoute: (context) => const BooksDetailView(),
       searchpageViewRoute: (context) => const SearcPageView(),
+      bookCompletedViewRoute: (context) => const BookCompletedView(),
     };
   }
 }

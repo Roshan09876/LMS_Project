@@ -192,28 +192,35 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                height: 100,
-                                width: 100,
-                                child: Card(
-                                  elevation: 10,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5)),
-                                  color: Color(kButton.value),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundColor: Colors.transparent,
-                                        backgroundImage: AssetImage(
-                                            'assets/icons/progress.png'),
-                                      ),
-                                      ReusableText(
-                                          text: 'Progress',
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(kLight.value)),
-                                    ],
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, AppRoute.bookCompletedViewRoute);
+                                },
+                                child: Container(
+                                  height: 100,
+                                  width: 100,
+                                  child: Card(
+                                    elevation: 10,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5)),
+                                    color: Color(kButton.value),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundColor: Colors.transparent,
+                                          backgroundImage: AssetImage(
+                                              'assets/icons/progress.png'),
+                                        ),
+                                        ReusableText(
+                                            text: 'Progress',
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(kLight.value)),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -341,7 +348,9 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                           child: Row(
                             children: [
                               Icon(Icons.search),
-                              SizedBox(width: 20,),
+                              SizedBox(
+                                width: 20,
+                              ),
                               ReusableText(
                                   text: 'Tap to Search....',
                                   fontSize: 14,

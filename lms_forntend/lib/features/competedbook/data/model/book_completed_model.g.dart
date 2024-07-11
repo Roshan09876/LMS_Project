@@ -8,13 +8,13 @@ part of 'book_completed_model.dart';
 
 BookCompletedModel _$BookCompletedModelFromJson(Map<String, dynamic> json) =>
     BookCompletedModel(
-      json['id'] as String?,
-      json['title'] as String?,
-      json['subtitle'] as String?,
-      json['description'] as String?,
-      json['image'] as String?,
-      json['course'] as String?,
-      json['level'] as String?,
+      id: json['id'] as String?,
+      title: json['title'] as String?,
+      subtitle: json['subtitle'] as String?,
+      description: json['description'] as String?,
+      image: json['image'] as String?,
+      course: json['course'] as String?,
+      level: json['level'] as String?,
     );
 
 Map<String, dynamic> _$BookCompletedModelToJson(BookCompletedModel instance) =>

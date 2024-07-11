@@ -77,7 +77,8 @@ class AuthRemoteDatasource {
                   description: book['description'] ?? "",
                   image: book['image'] ?? "",
                   course: book['course'] ?? "",
-                  level: book['level'] ?? ""))
+                  level: book['level'] ?? ""
+                  ))
               .toList();
         }
 
@@ -87,13 +88,13 @@ class AuthRemoteDatasource {
             userData['bookCompleted'] is List) {
           bookCompletedModel = (userData['bookCompleted'] as List)
               .map((bookCompleted) => BookCompletedModel(
-                    bookCompleted['_id'],
-                    bookCompleted['title'],
-                    bookCompleted['subtitle'],
-                    bookCompleted['description'],
-                    bookCompleted['image'],
-                    bookCompleted['course'],
-                    bookCompleted['level'],
+                      id: bookCompleted['_id'],
+                  title: bookCompleted['title'],
+                  subtitle: bookCompleted['subtitle'] ?? "",
+                  description: bookCompleted['description'] ?? "",
+                  image: bookCompleted['image'] ?? "",
+                  course: bookCompleted['course'] ?? "",
+                  level: bookCompleted['level'] ?? ""
                   ))
               .toList();
         }

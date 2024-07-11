@@ -13,15 +13,15 @@ class BookCompletedModel {
   final String? course;
   final String? level;
 
-  BookCompletedModel(
-    this.id,
-    this.title,
-    this.subtitle,
-    this.description,
-    this.image,
-    this.course,
-    this.level,
-  );
+  BookCompletedModel({
+    required this.id,
+    required this.title,
+    required this.subtitle,
+    required this.description,
+    required this.image,
+    required this.course,
+    required this.level,
+  });
 
   factory BookCompletedModel.fromJson(Map<String, dynamic> json) =>
       _$BookCompletedModelFromJson(json);
