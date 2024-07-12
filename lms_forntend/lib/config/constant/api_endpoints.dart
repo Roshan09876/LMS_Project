@@ -35,4 +35,5 @@ class ApiEndpoints {
   static const String getAdvanceBook= "/books/level/Advance";
   static const String searchBook= "/search";
   static const String getCompletedBook =  "/completedbooks";
+  static const String markasComplete =  "/markcomplete";
 }

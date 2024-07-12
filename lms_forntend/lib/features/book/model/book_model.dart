@@ -6,7 +6,7 @@ part 'book_model.g.dart';
 
 @JsonSerializable()
 class BookModel {
-  @JsonKey()
+  @JsonKey(name: '_id')
   final String? id;
   final String? title;
   final String? subtitle;
@@ -14,17 +14,17 @@ class BookModel {
   final String? image;
   final String? course;
   final String? level;
-  BookModel({
-    this.id,
-    this.title,
-    this.subtitle,
-    this.description,
-    this.image,
-     this.course,
-    this.level
-  });
+  BookModel(
+      {this.id,
+      this.title,
+      this.subtitle,
+      this.description,
+      this.image,
+      this.course,
+      this.level});
 
-  factory BookModel.fromJson(Map<String, dynamic> json) => _$BookModelFromJson(json);
+  factory BookModel.fromJson(Map<String, dynamic> json) =>
+      _$BookModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$BookModelToJson(this);
 }

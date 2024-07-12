@@ -165,8 +165,55 @@ const searchbook = async (req, res) => {
     }
 };
 
+const markascomplete = async(req, res) => {
+    try {
+        const { userId, bookId } = req.params;
+
+        // Find the user by ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        // Check if the book is already in the bookCompleted list
+        if (!user.bookCompleted.includes(bookId)) {
+            user.bookCompleted.push(bookId);
+            await user.save();
+            return res.status(200).send('Book marked as completed');
+        } else {
+            return res.status(200).send('Book is already marked as completed');
+        }
+    } catch (error) {
+        console.error('Error marking book as completed:', error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+const getAllCompletedBooks = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        // Find the user by ID
+        const user = await User.findById(userId).populate('bookCompleted');
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        // Get the completed books
+        const completedBooks = user.bookCompleted;
+
+        if (completedBooks.length === 0) {
+            return res.status(404).json({ success: false, message: 'No completed books found for this user' });
+        }
+
+        res.status(200).json({ success: true, books: completedBooks, message: 'Completed books fetched successfully' });
+    } catch (error) {
+        console.error('Error fetching completed books:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
 
 
 module.exports = {
-    createBook, getBookbyLevel, getAllBook, searchbook, getBooksByLevel
+    createBook, getBookbyLevel, getAllBook, searchbook, getBooksByLevel, markascomplete,  getAllCompletedBooks
 };

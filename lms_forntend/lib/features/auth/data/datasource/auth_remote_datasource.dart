@@ -77,8 +77,7 @@ class AuthRemoteDatasource {
                   description: book['description'] ?? "",
                   image: book['image'] ?? "",
                   course: book['course'] ?? "",
-                  level: book['level'] ?? ""
-                  ))
+                  level: book['level'] ?? ""))
               .toList();
         }
 
@@ -88,18 +87,18 @@ class AuthRemoteDatasource {
             userData['bookCompleted'] is List) {
           bookCompletedModel = (userData['bookCompleted'] as List)
               .map((bookCompleted) => BookCompletedModel(
-                      id: bookCompleted['_id'],
+                  id: bookCompleted['_id'],
                   title: bookCompleted['title'],
                   subtitle: bookCompleted['subtitle'] ?? "",
                   description: bookCompleted['description'] ?? "",
                   image: bookCompleted['image'] ?? "",
                   course: bookCompleted['course'] ?? "",
-                  level: bookCompleted['level'] ?? ""
-                  ))
+                  level: bookCompleted['level'] ?? ""))
               .toList();
         }
 
         final authEntity = AuthEntity(
+          id: userData['_id'],
           fullName: userData['fullName'],
           email: userData['email'],
           userName: userData['userName'],
@@ -107,9 +106,9 @@ class AuthRemoteDatasource {
           password: userData['password'],
           selectedCourse: selectedCourses,
           image: userData['image'],
-          books: books, // Assign the mapped books list
+          books: books, 
           bookCompleted:
-              bookCompletedModel, // Assign the mapped bookCompletedModel list
+              bookCompletedModel,
         );
 
         await flutterSecureStorage.write(key: "token", value: token);

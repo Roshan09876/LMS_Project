@@ -74,14 +74,14 @@ class _SearcPageViewState extends ConsumerState<SearcPageView> {
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
-                  : state.books.isEmpty
+                  : state.books!.isEmpty
                       ? Center(
                           child: Text('No results found.'),
                         )
                       : ListView.builder(
-                          itemCount: state.books.length,
+                          itemCount: state.books!.length,
                           itemBuilder: (context, index) {
-                            final book = state.books[index];
+                            final book = state.books![index];
                             return ListTile(
                               onTap: () {
                                 Navigator.pushNamed(

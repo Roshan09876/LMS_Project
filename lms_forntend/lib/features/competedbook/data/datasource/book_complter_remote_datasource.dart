@@ -15,6 +15,7 @@ final bookComplterRemoteDatasourceProvider =
       flutterSecureStorage: ref.read(flutterSecureStorageProvider),
       dio: ref.read(httpServiceProvider));
 });
+
 class BookComplterRemoteDatasource {
   final FlutterSecureStorage flutterSecureStorage;
   final Dio dio;
@@ -23,6 +24,44 @@ class BookComplterRemoteDatasource {
     required this.flutterSecureStorage,
     required this.dio,
   });
+
+  Future<Either<Failure, bool>> markasComplete(String bookId) async {
+    try {
+      final token = await flutterSecureStorage.read(key: 'token');
+      if (token == null) {
+        return Left(Failure(error: 'Token not found'));
+      }
+
+      final decodedToken = JwtDecoder.decode(token);
+      final userId = decodedToken['id'];
+      if (userId == null) {
+        return Left(Failure(error: 'User ID not found'));
+      }
+
+      final url = '${ApiEndpoints.markasComplete}/$userId/$bookId';
+      final response = await dio.post(
+        url,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return Right(true); // Successfully marked as complete
+      } else {
+        return Left(Failure(
+          error: 'Failed to mark book as complete',
+          statusCode: response.statusCode.toString(),
+        ));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(error: e.message.toString()));
+    } catch (e) {
+      return Left(Failure(error: 'An unexpected error occurred'));
+    }
+  }
 
   Future<Either<Failure, List<BookCompletedModel>>> getCompletedBook() async {
     try {
@@ -53,7 +92,8 @@ class BookComplterRemoteDatasource {
             responseData.containsKey('books')) {
           final List<dynamic> booksJson = responseData['books'];
 
-          final List<BookCompletedModel> bookCompletedModels = booksJson.map((bookJson) {
+          final List<BookCompletedModel> bookCompletedModels =
+              booksJson.map((bookJson) {
             return BookCompletedModel(
               id: bookJson['_id'] ?? '',
               title: bookJson['title'] ?? '',

@@ -90,7 +90,7 @@ const signin = async (req, res) => {
         });
     }
     try {
-        const userData = await User.findOne({ userName: userName }).populate('selectedCourse');
+        const userData = await User.findOne({ userName: userName }).populate('selectedCourse').populate('bookCompleted');
         if (!userData) {
             return res.status(400).json({
                 success: false,

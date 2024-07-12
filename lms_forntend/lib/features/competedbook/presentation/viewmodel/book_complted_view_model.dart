@@ -1,7 +1,6 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:learn_management_system/features/book/presentation/state/book_state.dart';
 import 'package:learn_management_system/features/competedbook/data/datasource/book_complter_remote_datasource.dart';
-import 'package:learn_management_system/features/competedbook/data/model/book_completed_model.dart';
 import 'package:learn_management_system/features/competedbook/presentation/state/book_complted_state.dart';
 
 final bookCompletedViewModelProvider =
@@ -28,6 +27,26 @@ class BookCompletedViewModel extends StateNotifier<BookCompltedState> {
       },
       (books) {
         state = state.copyWith(isLoading: false, bookCompletedModel: books);
+      },
+    );
+  }
+
+  Future<void> markAsComplete(String bookId) async {
+    state = state.copyWith(
+      isLoading: true,
+      error: null,
+    );
+    final result = await bookComplterRemoteDatasource.markasComplete(bookId);
+    result.fold(
+      (failure) {
+        state = state.copyWith(isLoading: false, error: failure.error);
+      },
+      (success) {
+        state = state.copyWith(
+          isLoading: false,
+        );
+        EasyLoading.showSuccess('Completed');
+        // fetchCompletedBooks();
       },
     );
   }

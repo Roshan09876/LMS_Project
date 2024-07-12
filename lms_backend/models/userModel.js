@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course"
     }],
+    bookCompleted: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Book"
+    }],
     image: {
         type: String,
         required: false

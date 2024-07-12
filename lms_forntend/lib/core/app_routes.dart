@@ -8,7 +8,7 @@ import 'package:learn_management_system/features/competedbook/presentation/view/
 import 'package:learn_management_system/features/course/presentation/view/select_course.dart';
 import 'package:learn_management_system/features/home/dashboard_view.dart';
 import 'package:learn_management_system/features/home/presentation/view/bottom_view.dart';
-import 'package:learn_management_system/features/home/books_detail_view.dart';
+import 'package:learn_management_system/features/competedbook/presentation/view/books_detail_view.dart';
 import 'package:learn_management_system/features/home/searc_page_view.dart';
 import 'package:learn_management_system/features/home/widgets_page/id_card.dart';
 import 'package:learn_management_system/features/profile/presentation/widgets/edit_profile.dart';

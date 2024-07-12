@@ -4,20 +4,20 @@ class BookState {
   final bool isLoading;
   final String? error;
   final bool showMessage;
-  final List<BookModel> books;
+  final List<BookModel>? books;
 
   BookState({
     required this.isLoading,
     this.error,
     this.showMessage = false,
-    required this.books,
+     this.books,
   });
 
   factory BookState.initial() {
     return BookState(
       isLoading: false,
       error: null,
-      books: [],
+      // books: [],
     );
   }
 

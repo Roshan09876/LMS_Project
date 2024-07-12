@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_management_system/config/common/app_color.dart';
@@ -18,20 +15,6 @@ class _BookCompletedViewState extends ConsumerState<BookCompletedView> {
   ImageProvider _getProfileImageProvider(String imageUrl) {
     if (imageUrl.startsWith('http')) {
       return NetworkImage(imageUrl);
-    } else {
-      // Use a default image for invalid URLs
-      return AssetImage('assets/images/logo.png');
-    }
-  }
-
-  ImageProvider _getImageProvider(String imageUrl) {
-    if (imageUrl.startsWith('http')) {
-      return NetworkImage(imageUrl);
-    } else if (imageUrl.startsWith('data:image')) {
-      return MemoryImage(base64Decode(imageUrl.split(',').last));
-    } else if (imageUrl.isNotEmpty) {
-      // Assuming this case handles local file paths.
-      return FileImage(File(imageUrl));
     } else {
       // Use a default image for invalid URLs
       return AssetImage('assets/images/logo.png');

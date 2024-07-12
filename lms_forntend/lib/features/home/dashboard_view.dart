@@ -58,7 +58,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             itemCount:
                                 // profileState.users?.first.books!.length ?? 0,
-                                bookState.books.length ?? 0,
+                                bookState.books!.length ?? 0,
                             itemBuilder: (context, index) {
                               final book =
                                   // profileState.users!.first.books![index];
@@ -75,6 +75,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                                   elevation: 5,
                                   child: InkWell(
                                     onTap: () {
+                                      // print('${book.id}');
                                       Navigator.pushNamed(
                                         context,
                                         AppRoute.booksViewRoute,

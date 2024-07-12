@@ -6,7 +6,7 @@ import 'package:learn_management_system/features/competedbook/data/model/book_co
 import 'package:learn_management_system/features/course/model/course_model.dart';
 
 class AuthEntity extends Equatable {
-  @JsonKey()
+  @JsonKey(name: '_id')
   final String? id;
   final String? fullName;
   final String? email;
@@ -60,6 +60,11 @@ class AuthEntity extends Equatable {
               .map((courseJson) => CourseModel.fromJson(courseJson))
               .toList()
           : null,
+      books: json['books'] != null
+          ? (json['books'] as List<dynamic>)
+              .map((books) => BookModel.fromJson(books))
+              .toList()
+          : null,
       bookCompleted: json['bookCompleted'] != null
           ? (json['bookCompleted'] as List<dynamic>)
               .map((bookCompletedJson) =>
@@ -81,8 +86,10 @@ class AuthEntity extends Equatable {
       'isAdmin': isAdmin,
       'selectedCourse':
           selectedCourse?.map((course) => course.toJson()).toList(),
-      'bookCompleted':
-          bookCompleted?.map((bookCompleted) => bookCompleted.toJson()).toList(),
+      'books': books?.map((books) => books.toJson()).toList(),
+      'bookCompleted': bookCompleted
+          ?.map((bookCompleted) => bookCompleted.toJson())
+          .toList(),
       'image': image,
     };
   }
@@ -96,6 +103,7 @@ class AuthEntity extends Equatable {
     String? password,
     bool? isAdmin,
     List<CourseModel>? selectedCourse, // Changed to CourseModel
+    List<BookModel>? books, // Changed to CourseModel
     List<BookCompletedModel>? bookCompleted, // Changed to CourseModel
     String? image,
   }) {
@@ -107,6 +115,7 @@ class AuthEntity extends Equatable {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       password: password ?? this.password,
       isAdmin: isAdmin ?? this.isAdmin,
+      books: books ?? this.books,
       selectedCourse: selectedCourse ?? this.selectedCourse,
       bookCompleted: bookCompleted ?? this.bookCompleted,
       image: image ?? this.image,

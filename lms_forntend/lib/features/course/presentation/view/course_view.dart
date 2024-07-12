@@ -239,7 +239,7 @@ class _CourseViewState extends ConsumerState<CourseView> {
                       ),
                       SizedBox(width: 10),
                       ReusableText(
-                        text: 'Books of level, ${easyState.books.first.level}',
+                        text: 'Books of level, ${easyState.books!.first.level}',
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: kLight,
@@ -249,9 +249,9 @@ class _CourseViewState extends ConsumerState<CourseView> {
                   content: Container(
                     height: 200, // Adjust as needed
                     child: ListView.builder(
-                      itemCount: easyState.books.length,
+                      itemCount: easyState.books!.length,
                       itemBuilder: (context, index) {
-                        BookModel book = easyState.books[index];
+                        BookModel book = easyState.books![index];
                         return ListTile(
                           onTap: () {
                             Navigator.pushNamed(

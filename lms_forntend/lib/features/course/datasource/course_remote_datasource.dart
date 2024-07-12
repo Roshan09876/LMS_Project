@@ -65,7 +65,8 @@ class CourseRemoteDatasource {
         return Left(Failure(error: 'Failed to select course'));
       }
     } on DioException catch (e) {
-      return Left(Failure(error: e.response?.data['message'] ?? 'Unknown error'));
+      return Left(
+          Failure(error: e.response?.data['message'] ?? 'Unknown error'));
     }
   }
 }
