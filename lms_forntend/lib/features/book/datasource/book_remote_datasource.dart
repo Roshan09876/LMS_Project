@@ -49,14 +49,7 @@ class BookRemoteDatasource {
             responseData['success'] == true &&
             responseData.containsKey('books')) {
           List<BookModel> books = (responseData['books'] as List)
-              .map((book) => BookModel(
-                    title: book['title'],
-                    subtitle: book['subtitle'] ?? '',
-                    description: book['description'] ?? '',
-                    image: book['image'] ?? '',
-                    course: book['course'] ?? '',
-                    level: book['level'] ?? '',
-                  ))
+              .map((book) => BookModel.fromJson(book))
               .toList();
           return Right(books);
         } else {
@@ -71,7 +64,7 @@ class BookRemoteDatasource {
   }
 
   //Easy Level
-    Future<Either<Failure, List<BookModel>>> getEasyLevelBooks() async {
+  Future<Either<Failure, List<BookModel>>> getEasyLevelBooks() async {
     try {
       // final url = ApiEndpoints.getBeginnerBook;
       final token = await flutterSecureStorage.read(key: 'token');
@@ -98,14 +91,7 @@ class BookRemoteDatasource {
             responseData['success'] == true &&
             responseData.containsKey('books')) {
           List<BookModel> books = (responseData['books'] as List)
-              .map((book) => BookModel(
-                    title: book['title'],
-                    subtitle: book['subtitle'] ?? '',
-                    description: book['description'] ?? '',
-                    image: book['image'] ?? '',
-                    course: book['course'] ?? '',
-                    level: book['level'] ?? '',
-                  ))
+              .map((book) => BookModel.fromJson(book))
               .toList();
           return Right(books);
         } else {
@@ -118,8 +104,9 @@ class BookRemoteDatasource {
       return Left(Failure(error: e.toString()));
     }
   }
+
   //Medium Level
-    Future<Either<Failure, List<BookModel>>> getMediumLevelBooks() async {
+  Future<Either<Failure, List<BookModel>>> getMediumLevelBooks() async {
     try {
       // final url = ApiEndpoints.getBeginnerBook;
       final token = await flutterSecureStorage.read(key: 'token');
@@ -145,22 +132,19 @@ class BookRemoteDatasource {
         if (responseData is Map<String, dynamic> &&
             responseData['success'] == true &&
             responseData.containsKey('books')) {
+
           List<BookModel> books = (responseData['books'] as List)
-              .map((book) => BookModel(
-                    title: book['title'],
-                    subtitle: book['subtitle'] ?? '',
-                    description: book['description'] ?? '',
-                    image: book['image'] ?? '',
-                    course: book['course'] ?? '',
-                    level: book['level'] ?? '',
-                  ))
+              .map((book) => BookModel.fromJson(book))
               .toList();
           return Right(books);
         } else {
           return Left(Failure(error: 'Books data not found in response'));
         }
       } else {
-        return Left(Failure(error: response.data['message']));
+        return Left(Failure(
+          error: response.data['message'],
+          statusCode: response.statusCode.toString(),
+        ));
       }
     } on DioException catch (e) {
       return Left(Failure(error: e.toString()));
@@ -168,7 +152,7 @@ class BookRemoteDatasource {
   }
 
   //Hard Level
-    Future<Either<Failure, List<BookModel>>> getHardLevelBooks() async {
+  Future<Either<Failure, List<BookModel>>> getHardLevelBooks() async {
     try {
       // final url = ApiEndpoints.getBeginnerBook;
       final token = await flutterSecureStorage.read(key: 'token');
@@ -194,15 +178,19 @@ class BookRemoteDatasource {
         if (responseData is Map<String, dynamic> &&
             responseData['success'] == true &&
             responseData.containsKey('books')) {
+          // List<BookModel> books = (responseData['books'] as List)
+          //     .map((book) => BookModel(
+          //           id: book['_id'],
+          //           title: book['title'],
+          //           subtitle: book['subtitle'] ?? '',
+          //           description: book['description'] ?? '',
+          //           image: book['image'] ?? '',
+          //           course: book['course'] ?? '',
+          //           level: book['level'] ?? '',
+          //         ))
+          //     .toList();
           List<BookModel> books = (responseData['books'] as List)
-              .map((book) => BookModel(
-                    title: book['title'],
-                    subtitle: book['subtitle'] ?? '',
-                    description: book['description'] ?? '',
-                    image: book['image'] ?? '',
-                    course: book['course'] ?? '',
-                    level: book['level'] ?? '',
-                  ))
+              .map((book) => BookModel.fromJson(book))
               .toList();
           return Right(books);
         } else {
@@ -215,8 +203,9 @@ class BookRemoteDatasource {
       return Left(Failure(error: e.toString()));
     }
   }
+
   //Advance Level
-    Future<Either<Failure, List<BookModel>>> getAdvanceLevelBooks() async {
+  Future<Either<Failure, List<BookModel>>> getAdvanceLevelBooks() async {
     try {
       // final url = ApiEndpoints.getBeginnerBook;
       final token = await flutterSecureStorage.read(key: 'token');
@@ -244,6 +233,7 @@ class BookRemoteDatasource {
             responseData.containsKey('books')) {
           List<BookModel> books = (responseData['books'] as List)
               .map((book) => BookModel(
+                    id: book['_id'],
                     title: book['title'],
                     subtitle: book['subtitle'] ?? '',
                     description: book['description'] ?? '',
@@ -264,7 +254,7 @@ class BookRemoteDatasource {
     }
   }
 
-    Future<Either<Failure, List<BookModel>>> searchBooks(String keyword) async {
+  Future<Either<Failure, List<BookModel>>> searchBooks(String keyword) async {
     try {
       final token = await flutterSecureStorage.read(key: 'token');
       if (token == null) {
@@ -280,7 +270,8 @@ class BookRemoteDatasource {
         return Left(Failure(error: 'No selected course found'));
       }
       final selectedCourseId = selectedCourses[0]['_id'];
-      final url = "${ApiEndpoints.searchBook}/$userID/$selectedCourseId/$keyword";
+      final url =
+          "${ApiEndpoints.searchBook}/$userID/$selectedCourseId/$keyword";
 
       final response = await dio.get(
         url,
@@ -293,7 +284,8 @@ class BookRemoteDatasource {
 
       if (response.statusCode == 200) {
         final responseData = response.data;
-        if (responseData['success'] == true && responseData.containsKey('books')) {
+        if (responseData['success'] == true &&
+            responseData.containsKey('books')) {
           final List<BookModel> books = (responseData['books'] as List)
               .map((book) => BookModel.fromJson(book))
               .toList();
@@ -302,13 +294,14 @@ class BookRemoteDatasource {
           return Left(Failure(error: 'Books data not found in response'));
         }
       } else {
-        return Left(Failure(error: 'Failed to load books. Status code: ${response.statusCode}'));
+        return Left(Failure(
+            error:
+                'Failed to load books. Status code: ${response.statusCode}'));
       }
     } on DioException catch (e) {
-        return Left(Failure(error: e.toString()));
+      return Left(Failure(error: e.toString()));
     } catch (e) {
       return Left(Failure(error: 'Unexpected error: $e'));
     }
   }
-
 }

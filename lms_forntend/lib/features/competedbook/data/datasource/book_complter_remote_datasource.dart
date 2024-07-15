@@ -52,12 +52,12 @@ class BookComplterRemoteDatasource {
         return Right(true); // Successfully marked as complete
       } else {
         return Left(Failure(
-          error: 'Failed to mark book as complete',
+          error: response.data['message'],
           statusCode: response.statusCode.toString(),
         ));
       }
     } on DioException catch (e) {
-      return Left(Failure(error: e.message.toString()));
+      return Left(Failure(error: e.response!.data['message'].toString()));
     } catch (e) {
       return Left(Failure(error: 'An unexpected error occurred'));
     }

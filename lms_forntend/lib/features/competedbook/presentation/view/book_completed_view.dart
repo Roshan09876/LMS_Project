@@ -68,27 +68,33 @@ class _BookCompletedViewState extends ConsumerState<BookCompletedView> {
                   color: kButton,
                   elevation: 7,
                   margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: ListTile(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                    leading: CircleAvatar(
-                      backgroundImage:
-                          _getProfileImageProvider("${book.image}"),
-                      radius: 30,
-                    ),
-                    title: ReusableText(
-                        text: '${book.title}',
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: kLight),
-                   subtitle: ReusableText(
-                        text: '${book.subtitle}',
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: kLight),
+                  child: InkWell(
                     onTap: () {
-                      // Add navigation or action on tap if needed
+                      
                     },
+                    child: ListTile(
+                      
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      leading: CircleAvatar(
+                        backgroundImage:
+                            _getProfileImageProvider("${book.image}"),
+                        radius: 30,
+                      ),
+                      title: ReusableText(
+                          text: '${book.title}',
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: kLight),
+                     subtitle: ReusableText(
+                          text: '${book.subtitle}',
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: kLight),
+                      onTap: () {
+                        // Add navigation or action on tap if needed
+                      },
+                    ),
                   ),
                 );
               },

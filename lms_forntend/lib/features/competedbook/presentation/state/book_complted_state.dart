@@ -6,6 +6,7 @@ import 'package:learn_management_system/features/competedbook/data/model/book_co
 
 class BookCompltedState {
   final bool isLoading;
+  final bool? isBookCompleted;
   final String? error;
   final bool showMessage;
   final List<BookCompletedModel> bookCompletedModel;
@@ -13,6 +14,7 @@ class BookCompltedState {
   BookCompltedState({
     required this.isLoading,
     this.error,
+    this.isBookCompleted,
     this.showMessage = false,
     required this.bookCompletedModel,
   });
@@ -20,6 +22,7 @@ class BookCompltedState {
   factory BookCompltedState.initial() {
     return BookCompltedState(
       isLoading: false,
+      isBookCompleted: false,
       error: null,
       bookCompletedModel: [],
     );
@@ -27,12 +30,14 @@ class BookCompltedState {
 
   BookCompltedState copyWith({
     bool? isLoading,
+    bool? isBookCompleted,
     String? error,
     bool? showMessage,
      List<BookCompletedModel>? bookCompletedModel,
   }) {
     return BookCompltedState(
       isLoading: isLoading ?? this.isLoading,
+      isBookCompleted: isBookCompleted ?? this.isBookCompleted,
       error: error ?? this.error,
       showMessage: showMessage ?? this.showMessage,
       bookCompletedModel: bookCompletedModel ?? this.bookCompletedModel,

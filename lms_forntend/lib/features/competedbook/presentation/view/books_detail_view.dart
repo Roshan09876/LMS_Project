@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_management_system/config/common/app_color.dart';
 import 'package:learn_management_system/config/common/reusable_text.dart';
 import 'package:learn_management_system/features/book/model/book_model.dart';
+import 'package:learn_management_system/features/competedbook/presentation/viewmodel/book_complted_view_model.dart';
 
 class BooksDetailView extends ConsumerStatefulWidget {
   const BooksDetailView({super.key});
@@ -117,11 +118,11 @@ class _BooksDetailViewState extends ConsumerState<BooksDetailView> {
           onPressed: () async {
             print('${book.id}');
             print('object');
-            // if (book.id != null) {
-            //   await ref
-            //       .read(bookCompletedViewModelProvider.notifier)
-            //       .markAsComplete(book.id!);
-            // }
+            if (book.id != null) {
+              await ref
+                  .read(bookCompletedViewModelProvider.notifier)
+                  .markAsComplete(book.id!);
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: kButton,
@@ -158,7 +159,7 @@ class _BooksDetailViewState extends ConsumerState<BooksDetailView> {
 }
 
 class FullScreenImage extends StatelessWidget {
-  final String imageUrl;
+  final String imageUrl; 
 
   const FullScreenImage({required this.imageUrl});
 

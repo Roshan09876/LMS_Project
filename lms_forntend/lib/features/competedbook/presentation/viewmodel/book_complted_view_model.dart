@@ -40,6 +40,7 @@ class BookCompletedViewModel extends StateNotifier<BookCompltedState> {
     result.fold(
       (failure) {
         state = state.copyWith(isLoading: false, error: failure.error);
+        EasyLoading.showError(failure.error);
       },
       (success) {
         state = state.copyWith(
@@ -50,4 +51,27 @@ class BookCompletedViewModel extends StateNotifier<BookCompltedState> {
       },
     );
   }
+
+   // Simulated method to mark a book as completed locally
+  Future<void> isBookCompleted(String bookId) async {
+    state = state.copyWith(
+      isLoading: true,
+      error: null,
+    );
+    
+    // Simulating a delay to mimic network call
+    await Future.delayed(Duration(seconds: 2));
+
+    state = state.copyWith(
+      isLoading: false,
+      isBookCompleted: true,
+    );
+
+    EasyLoading.showSuccess('Marked as Completed');
+  }
+
+  // Method to check if the book is completed locally
+  // bool isBookCompleted(String bookId) {
+  //   return state.isBookCompleted;
+  // }
 }

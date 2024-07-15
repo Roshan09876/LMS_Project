@@ -11,13 +11,13 @@ class ApiEndpoints {
   //For Windows Base URL
   // static const String baseUrl = 'http://10.0.2.2:5500/api/';
   // For MAC
-  static const String baseUrl = "http://localhost:5500/api/";
+  // static const String baseUrl = "http://localhost:5500/api/";
 
   //Office
   // static const String baseUrl = "http://172.25.10.51:5500/api/";
 
   //Flat
-  // static const String baseUrl = "http://192.168.1.67:5500/api/";
+  static const String baseUrl = "http://192.168.1.67:5500/api/";
 
   //College wifi
   // static const String baseUrl = "http://10.12.13.104:5500/api/";

@@ -175,13 +175,27 @@ const markascomplete = async(req, res) => {
             return res.status(404).send('User not found');
         }
 
+        const existingBook = user.bookCompleted.find(book => book.bookId === bookId);
+        if(existingBook){
+            return res.status(404).json({
+                success: false,
+                message: "Book already completed",
+            });
+        }
+
         // Check if the book is already in the bookCompleted list
         if (!user.bookCompleted.includes(bookId)) {
             user.bookCompleted.push(bookId);
             await user.save();
-            return res.status(200).send('Book marked as completed');
+            return res.status(200).json({
+                success: true,
+                message: 'Book marked as completed'
+            })
         } else {
-            return res.status(200).send('Book is already marked as completed');
+            return res.status(400).json({
+                success: false,
+                message: 'Book already marked as completed'
+            })
         }
     } catch (error) {
         console.error('Error marking book as completed:', error);
