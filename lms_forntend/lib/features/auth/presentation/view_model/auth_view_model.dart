@@ -43,11 +43,6 @@ class AuthViewModel extends StateNotifier<AuthState> {
         Navigator.pushNamed(context, AppRoute.loginViewRoute);
         EasyLoading.dismiss();
       });
-      // showSnackBar(
-      //     message: 'User Created Successfully',
-      //     context: context,
-      //     color: Colors.green);
-      // Navigator.pushNamed(context, AppRoute.loginViewRoute);
     });
   }
 
@@ -80,4 +75,6 @@ class AuthViewModel extends StateNotifier<AuthState> {
       });
     });
   }
+
+
 }

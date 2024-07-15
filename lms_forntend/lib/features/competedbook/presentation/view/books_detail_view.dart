@@ -16,6 +16,8 @@ class BooksDetailView extends ConsumerStatefulWidget {
 }
 
 class _BooksDetailViewState extends ConsumerState<BooksDetailView> {
+  bool isCompleted = false;
+
   @override
   Widget build(BuildContext context) {
     var book = ModalRoute.of(context)!.settings.arguments as BookModel;
@@ -50,14 +52,12 @@ class _BooksDetailViewState extends ConsumerState<BooksDetailView> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) =>
-                          FullScreenImage(imageUrl: "${book.image}"),
+                      builder: (_) => FullScreenImage(imageUrl: "${book.image}"),
                     ),
                   );
                 },
                 child: Hero(
-                  tag:
-                      'bookImage${book.title}', // Unique tag for the Hero widget
+                  tag: 'bookImage${book.title}',
                   child: Container(
                     height: 150,
                     width: double.infinity,
@@ -116,8 +116,9 @@ class _BooksDetailViewState extends ConsumerState<BooksDetailView> {
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
           onPressed: () async {
-            print('${book.id}');
-            print('object');
+            setState(() {
+              isCompleted = !isCompleted;
+            });
             if (book.id != null) {
               await ref
                   .read(bookCompletedViewModelProvider.notifier)
@@ -125,14 +126,14 @@ class _BooksDetailViewState extends ConsumerState<BooksDetailView> {
             }
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: kButton,
+            backgroundColor: isCompleted ? Colors.green : kButton,
             padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
           ),
           child: Text(
-            'Mark as Complete',
+            isCompleted ? 'Completed' : 'Mark as Complete',
             style: TextStyle(
               fontSize: 16,
               color: Colors.white,
@@ -149,17 +150,15 @@ class _BooksDetailViewState extends ConsumerState<BooksDetailView> {
     } else if (imageUrl.startsWith('data:image')) {
       return MemoryImage(base64Decode(imageUrl.split(',').last));
     } else if (imageUrl.isNotEmpty) {
-      // Assuming this case handles local file paths.
       return FileImage(File(imageUrl));
     } else {
-      // Use a default image for invalid URLs
       return AssetImage('assets/images/logo.png');
     }
   }
 }
 
 class FullScreenImage extends StatelessWidget {
-  final String imageUrl; 
+  final String imageUrl;
 
   const FullScreenImage({required this.imageUrl});
 
